@@ -13,7 +13,6 @@ public class logoutLogger implements LogoutHandler {
 
     @Override
     public void logout(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
-        System.out.println("User " + authentication.getName() + " has logged out");
         try {
             response.sendRedirect("/login");
         } catch (IOException e) {

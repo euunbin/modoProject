@@ -46,19 +46,25 @@ public class securityConfig {
     @Bean
     public AuthenticationSuccessHandler successHandler() {
         return ((request, response, authentication) -> {
-            DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
+            // 사용자를 로그인 페이지로 리다이렉트
+        /*
+        DefaultOAuth2User defaultOAuth2User = (DefaultOAuth2User) authentication.getPrincipal();
 
-            String id = defaultOAuth2User.getAttributes().get("id").toString();
-            String body = """
-                    {"id":"%s"}
-                    """.formatted(id);
+        String id = defaultOAuth2User.getAttributes().get("id").toString();
+        String body = """
+                {"id":"%s"}
+                """.formatted(id);
 
-            response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-            response.setCharacterEncoding(StandardCharsets.UTF_8.name());
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setCharacterEncoding(StandardCharsets.UTF_8.name());
 
-            PrintWriter writer = response.getWriter();
-            writer.println(body);
-            writer.flush();
+        PrintWriter writer = response.getWriter();
+        writer.println(body);
+        writer.flush();
+        */
+
+            // 로그인 성공 후 로그인 페이지로 리다이렉트합니다.
+            response.sendRedirect("/login");
         });
     }
 
