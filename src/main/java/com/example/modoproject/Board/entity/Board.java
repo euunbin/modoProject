@@ -34,6 +34,9 @@ public class Board {
     @Column(columnDefinition = "TEXT", nullable = false)
     private String content;
 
+    @Column
+    private String imagePath; // 이미지 파일의 경로를 저장할 필드 추가
+
     @CreatedDate
     @Column(updatable = false)
     private LocalDateTime createdDate;
@@ -42,10 +45,11 @@ public class Board {
     private LocalDateTime modifiedDate;
 
     @Builder
-    public Board(Long id, String author, String title, String content) {
+    public Board(Long id, String author, String title, String content, String imagePath) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
+        this.imagePath = imagePath;
     }
 }
