@@ -48,13 +48,11 @@ public class BoardDto {
         this.imageData = imageData;
     }
 
-    // 이미지 경로를 설정하는 setter
+
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
-    // 이미지 경로를 반환하는 getter
-    public String getImagePath() {
-        return imagePath;
-    }
+
+
 }

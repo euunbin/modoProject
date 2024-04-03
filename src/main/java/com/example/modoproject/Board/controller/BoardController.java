@@ -25,7 +25,8 @@ import org.springframework.web.multipart.MultipartFile;
 @Controller
 public class BoardController {
     private BoardService boardService;
-    private static final String UPLOAD_DIR = "uploads"; // 이미지를 업로드할 디렉토리
+    private static final String UPLOAD_DIR = "src/main/resources/static/uploads";
+    private static final String UPLOAD_DIR2 = "uploads";
 
     public BoardController(BoardService boardService) {
         this.boardService = boardService;
@@ -47,13 +48,21 @@ public class BoardController {
 
 
     @PostMapping("/post")
-    public String write(BoardDto boardDto, @RequestParam("image") MultipartFile image) {
+    public String write(BoardDto boardDto, @RequestParam("image") MultipartFile image, Model model) {
         try {
-            // 이미지 데이터를 바이트 배열로 변환하여 BoardDto에 설정
-            boardDto.setImageData(image.getBytes());
-            // 이미지를 저장하고 저장된 경로를 imagePath에 설정
-            String imagePath = saveImage(image);
-            boardDto.setImagePath(imagePath);
+            if (image != null && !image.isEmpty()) {
+                // 이미지 데이터를 바이트 배열로 변환하여 BoardDto에 설정
+                boardDto.setImageData(image.getBytes());
+                // 이미지를 저장하고 저장된 경로를 imagePath에 설정
+                String imagePath = saveImage(image);
+                if (imagePath != null) {
+                    boardDto.setImagePath(imagePath);
+                    model.addAttribute("imagePath", "/" + boardDto.getImagePath());
+                } else {
+                    // 이미지 저장에 실패한 경우 처리
+                    // 예를 들어 에러 메시지를 사용자에게 보여줄 수 있습니다.
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
             // 이미지 데이터를 읽어오는데 실패한 경우 예외 처리
@@ -63,6 +72,8 @@ public class BoardController {
         boardService.savePost(boardDto);
         return "redirect:/";
     }
+
+
 
 
     private String saveImage(MultipartFile image) {
@@ -84,14 +95,15 @@ public class BoardController {
             Path filePath = uploadPath.resolve(newFileName);
             Files.copy(image.getInputStream(), filePath);
 
-            // 저장된 파일의 경로를 반환
-            return UPLOAD_DIR + File.separator + newFileName;
+            // 저장된 파일의 경로를 반환 (역슬래시 대신에 슬래시 사용)
+            return UPLOAD_DIR2 + "/" + newFileName;
         } catch (IOException e) {
             e.printStackTrace();
             // 파일 저장에 실패한 경우 예외 처리
             return null;
         }
     }
+
 
     @GetMapping("/post/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
@@ -108,10 +120,27 @@ public class BoardController {
     }
 
     @PutMapping("/post/edit/{id}")
-    public String update(BoardDto boardDto) {
+    public String update(BoardDto boardDto, @RequestParam(value = "image", required = false) MultipartFile image) {
+        try {
+            // 이미지를 변경했을 때만 새로운 이미지를 업로드하고 이미지 경로를 설정합니다.
+            if (image != null && !image.isEmpty()) {
+                boardDto.setImageData(image.getBytes());
+                String imagePath = saveImage(image);
+                boardDto.setImagePath(imagePath);
+            } else {
+                // 이미지를 변경하지 않았을 때는 기존 이미지 경로를 유지합니다.
+                BoardDto existingPost = boardService.getPost(boardDto.getId());
+                boardDto.setImagePath(existingPost.getImagePath());
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         boardService.savePost(boardDto);
         return "redirect:/";
     }
+
+
 
     @DeleteMapping("/post/{id}")
     public String delete(@PathVariable("id") Long id) {

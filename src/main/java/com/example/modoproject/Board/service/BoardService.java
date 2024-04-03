@@ -1,6 +1,5 @@
 package com.example.modoproject.Board.service;
 
-
 import com.example.modoproject.Board.dto.BoardDto;
 import com.example.modoproject.Board.entity.Board;
 import com.example.modoproject.Board.repository.BoardRepository;
@@ -34,6 +33,7 @@ public class BoardService {
                     .author(board.getAuthor())
                     .title(board.getTitle())
                     .content(board.getContent())
+                    .imagePath(board.getImagePath()) // 이미지 경로 추가
                     .createdDate(board.getCreatedDate())
                     .build();
             boardDtoList.add(boardDto);
@@ -50,6 +50,7 @@ public class BoardService {
                 .author(board.getAuthor())
                 .title(board.getTitle())
                 .content(board.getContent())
+                .imagePath(board.getImagePath()) // 이미지 경로 추가
                 .createdDate(board.getCreatedDate())
                 .build();
         return boardDto;

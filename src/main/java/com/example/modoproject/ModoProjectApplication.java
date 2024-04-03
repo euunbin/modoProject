@@ -21,6 +21,7 @@ public class ModoProjectApplication {
         return new HiddenHttpMethodFilter();
 
     }
+
     // 커스텀 에러 페이지 매핑
     @Bean
     public ErrorController errorController() {

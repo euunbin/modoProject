@@ -34,7 +34,8 @@
                 <span th:text="${#temporals.format(post.createdDate, 'yyyy-MM-dd HH:mm')}"></span>
             </td>
             <td>
-                <img th:if="${post.imagePath != null}" th:src="@{${post.imagePath}}" class="img-fluid" alt="이미지" />
+                <img th:src="@{'/' + ${post.imagePath}}" class="img-fluid" alt="이미지" />
+
             </td>
         </tr>
 
