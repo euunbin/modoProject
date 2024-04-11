@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -151,5 +152,9 @@ public class BoardController {
     public String getCategory(@PathVariable("id") Long id) {
         BoardDto boardDto = boardService.getPost(id);
         return "카테고리: " + boardDto.getCategory();
+    }
+    @ModelAttribute("categories")
+    public List<String> categories() {
+        return Arrays.asList("한식", "중식", "일식", "양식");
     }
 }
