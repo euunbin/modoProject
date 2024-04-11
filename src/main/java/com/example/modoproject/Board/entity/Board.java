@@ -1,7 +1,5 @@
 package com.example.modoproject.Board.entity;
 
-
-
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AccessLevel;
@@ -18,7 +16,7 @@ import java.time.LocalDateTime;
 @Getter
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@EntityListeners(AuditingEntityListener.class) /* JPA에게 해당 Entity는 Auditiong 기능을 사용함을 알립니다. */
+@EntityListeners(AuditingEntityListener.class)
 public class Board {
 
     @Id
@@ -44,12 +42,16 @@ public class Board {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
+    @Column(length = 10, nullable = false)
+    private String category;
+
     @Builder
-    public Board(Long id, String author, String title, String content, String imagePath) {
+    public Board(Long id, String author, String title, String content, String imagePath, String category) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
         this.imagePath = imagePath;
+        this.category = category;
     }
 }

@@ -45,8 +45,6 @@ public class BoardController {
         return "board/post.html";
     }
 
-
-
     @PostMapping("/post")
     public String write(BoardDto boardDto, @RequestParam("image") MultipartFile image, Model model) {
         try {
@@ -146,5 +144,12 @@ public class BoardController {
     public String delete(@PathVariable("id") Long id) {
         boardService.deletePost(id);
         return "redirect:/";
+    }
+
+    @GetMapping("/board/getCategory/{id}")
+    @ResponseBody
+    public String getCategory(@PathVariable("id") Long id) {
+        BoardDto boardDto = boardService.getPost(id);
+        return "카테고리: " + boardDto.getCategory();
     }
 }

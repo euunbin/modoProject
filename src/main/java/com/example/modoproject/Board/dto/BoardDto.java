@@ -16,29 +16,31 @@ public class BoardDto {
     private String title;
     private String content;
     private String imagePath; // 이미지 경로 필드 추가
+    private String category;
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MultipartFile image;
     private byte[] imageData; // 이미지 데이터 필드 추가
 
     public Board toEntity() {
-        Board build = Board.builder()
+        return Board.builder()
                 .id(id)
                 .author(author)
                 .title(title)
                 .content(content)
                 .imagePath(imagePath) // Board 엔티티에 이미지 경로 설정
+                .category(category)
                 .build();
-        return build;
     }
 
     @Builder
-    public BoardDto(Long id, String author, String title, String content, String imagePath, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public BoardDto(Long id, String author, String title, String content, String imagePath, String category, LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
         this.imagePath = imagePath;
+        this.category = category;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
     }
@@ -48,11 +50,11 @@ public class BoardDto {
         this.imageData = imageData;
     }
 
-
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
 
-
-
+    public String getCategory() {
+        return category;
+    }
 }

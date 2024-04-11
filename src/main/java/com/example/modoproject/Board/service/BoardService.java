@@ -34,6 +34,7 @@ public class BoardService {
                     .title(board.getTitle())
                     .content(board.getContent())
                     .imagePath(board.getImagePath()) // 이미지 경로 추가
+                    .category(board.getCategory())
                     .createdDate(board.getCreatedDate())
                     .build();
             boardDtoList.add(boardDto);
@@ -51,6 +52,7 @@ public class BoardService {
                 .title(board.getTitle())
                 .content(board.getContent())
                 .imagePath(board.getImagePath()) // 이미지 경로 추가
+                .category(board.getCategory())
                 .createdDate(board.getCreatedDate())
                 .build();
         return boardDto;
