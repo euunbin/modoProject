@@ -157,4 +157,11 @@ public class BoardController {
     public List<String> categories() {
         return Arrays.asList("한식", "중식", "일식", "양식");
     }
+
+    @GetMapping("/board/category/{category}")
+    public String getPostsByCategory(@PathVariable("category") String category, Model model) {
+        List<BoardDto> boardDtoList = boardService.getBoardListByCategory(category);
+        model.addAttribute("postList", boardDtoList);
+        return "board/list.html";
+    }
 }

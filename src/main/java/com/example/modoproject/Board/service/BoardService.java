@@ -62,4 +62,25 @@ public class BoardService {
     public void deletePost(Long id) {
         boardRepository.deleteById(id);
     }
+
+    @Transactional
+    public List<BoardDto> getBoardListByCategory(String category) {
+        List<Board> boardList = boardRepository.findByCategory(category);
+        List<BoardDto> boardDtoList = new ArrayList<>();
+
+        for(Board board : boardList) {
+            BoardDto boardDto = BoardDto.builder()
+                    .id(board.getId())
+                    .author(board.getAuthor())
+                    .title(board.getTitle())
+                    .content(board.getContent())
+                    .imagePath(board.getImagePath()) // 이미지 경로 추가
+                    .category(board.getCategory())
+                    .createdDate(board.getCreatedDate())
+                    .build();
+            boardDtoList.add(boardDto);
+        }
+        return boardDtoList;
+    }
+
 }
