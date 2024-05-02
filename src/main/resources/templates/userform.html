@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>유저 정보 저장</title>
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <input type="text" id="sample6_postcode" placeholder="우편번호">
+  <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
+  <input type="text" id="sample6_address" placeholder="주소"><br>
+  <input type="text" id="sample6_detailAddress" placeholder="상세주소">
+  <input type="text" id="sample6_extraAddress" placeholder="참고항목">
+
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script>
+    function sample6_execDaumPostcode() {
+      new daum.Postcode({
+        oncomplete: function(data) {
+          var addr = ''; //주소
+          var extraAddr = ''; //참고항목
+
+          if (data.userSelectedType === 'R') { //도로명 주소를 선택했을 경우
+            addr = data.roadAddress;
+          } else { //지번 주소를 선택했을 경우(J)
+            addr = data.jibunAddress;
+          }
+
+          //선택한 주소가 도로명 타입일 때 참고항목을 조합
+          if(data.userSelectedType === 'R'){
+            if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
+              extraAddr += data.bname;
+            }
+            if(data.buildingName !== '' && data.apartment === 'Y'){
+              extraAddr += (extraAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            }
+            if(extraAddr !== ''){
+              extraAddr = ' (' + extraAddr + ')';
+            }
+            document.getElementById("sample6_extraAddress").value = extraAddr;
+
+          } else {
+            document.getElementById("sample6_extraAddress").value = '';
+          }
+
+          document.getElementById('sample6_postcode').value = data.zonecode;
+          document.getElementById("sample6_address").value = addr;
+          document.getElementById("sample6_detailAddress").focus();
+        }
+      }).open();
+    }
+  </script>
+</head>
+<body>
+<h2>유저 정보 저장</h2>
+<form action="/userinfo" method="post">
+  <label for="phoneNumber">전화번호:</label>
+  <input type="text" id="phoneNumber" name="phoneNumber" required><br><br>
+  <label for="email">이메일:</label>
+  <input type="email" id="email" name="email" required><br><br>
+  <button type="submit">제출</button>
+</form>
+</body>
+</html>
