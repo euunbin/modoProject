@@ -2,6 +2,7 @@ package com.example.modoproject.entity;
 
 import jakarta.persistence.*;
 
+
 @Entity
 @Table(name = "users")
 public class User {
@@ -14,6 +15,9 @@ public class User {
     private String clientId;
     private String providerName;
     private String role;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private UserInfo userInfo;
 
     // 생성자, 게터 및 세터
     public User() {}
@@ -35,5 +39,17 @@ public class User {
     }
 
     public void setRole(String role) {this.role = role;}
-}
 
+    public Long getId() {
+        return id;
+    }
+
+    public UserInfo getUserInfo() {
+        return userInfo;
+    }
+
+    public void setUserInfo(UserInfo userInfo) {
+        this.userInfo = userInfo;
+        userInfo.setUser(this);
+    }
+}
