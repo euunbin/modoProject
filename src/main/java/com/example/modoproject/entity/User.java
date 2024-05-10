@@ -16,10 +16,6 @@ public class User {
     private String providerName;
     private String role;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private UserInfo userInfo;
-
-    // 생성자, 게터 및 세터
     public User() {}
 
     public void setNickname(String nickname) {
@@ -44,12 +40,5 @@ public class User {
         return id;
     }
 
-    public UserInfo getUserInfo() {
-        return userInfo;
-    }
 
-    public void setUserInfo(UserInfo userInfo) {
-        this.userInfo = userInfo;
-        userInfo.setUser(this);
-    }
 }

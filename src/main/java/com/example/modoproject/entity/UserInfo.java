@@ -13,10 +13,7 @@ public class UserInfo {
     private String address;
     private String detailAddress;
     private String extraAddress;
-
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String fullAddress;
 
     public Long getId() {
         return id;
@@ -74,11 +71,20 @@ public class UserInfo {
         this.extraAddress = extraAddress;
     }
 
-    public User getUser() {
-        return user;
+    public String getFullAddress() {
+        return fullAddress;
+    }
+    public void setFullAddress(String fullAddress) {
+        this.fullAddress = fullAddress;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    // 전체 주소 가공
+    public void constructFullAddress() {
+        if (!detailAddress.isEmpty()) {
+            this.fullAddress = address + " " + detailAddress;
+        } else {
+            this.fullAddress = address;
+        }
     }
+
 }

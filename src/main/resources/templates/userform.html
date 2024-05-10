@@ -4,13 +4,6 @@
   <meta charset="UTF-8">
   <title>유저 정보 저장</title>
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-  <input type="text" id="sample6_postcode" placeholder="우편번호">
-  <input type="button" onclick="sample6_execDaumPostcode()" value="우편번호 찾기"><br>
-  <input type="text" id="sample6_address" placeholder="주소"><br>
-  <input type="text" id="sample6_detailAddress" placeholder="상세주소">
-  <input type="text" id="sample6_extraAddress" placeholder="참고항목">
-
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script>
     function sample6_execDaumPostcode() {
       new daum.Postcode({
@@ -24,7 +17,7 @@
             addr = data.jibunAddress;
           }
 
-          //선택한 주소가 도로명 타입일 때 참고항목을 조합
+          // 선택한 주소가 도로명 타입일 때 참고항목을 조합
           if(data.userSelectedType === 'R'){
             if(data.bname !== '' && /[동|로|가]$/g.test(data.bname)){
               extraAddr += data.bname;
@@ -47,16 +40,51 @@
         }
       }).open();
     }
+
+    function submitForm() {
+      // 주소 정보 가져오기
+      var postcode = document.getElementById("sample6_postcode").value;
+      var address = document.getElementById("sample6_address").value;
+      var detailAddress = document.getElementById("sample6_detailAddress").value;
+      var extraAddress = document.getElementById("sample6_extraAddress").value;
+
+      // 전화번호와 이메일 정보 가져오기
+      var phoneNumber = document.getElementById("phoneNumber").value;
+      var email = document.getElementById("email").value;
+
+      // 폼 데이터 설정
+      var formData = {
+        postcode: postcode,
+        address: address,
+        detailAddress: detailAddress,
+        extraAddress: extraAddress,
+        phoneNumber: phoneNumber,
+        email: email
+      };
+
+      // 폼 전송
+      var form = document.getElementById("userInfoForm");
+      form.submit();
+    }
   </script>
 </head>
 <body>
 <h2>유저 정보 저장</h2>
-<form action="/userinfo" method="post">
+<form id="userInfoForm" action="/userinfo" method="post">
+  <input type="button" onclick="sample6_execDaumPostcode()" value="주소 검색"><br>
+  <label for="sample6_address">주소:</label>
+  <input type="text" id="sample6_address" name="address" placeholder="주소" readonly><br>
+  <label for="sample6_detailAddress">상세주소:</label>
+  <input type="text" id="sample6_detailAddress" name="detailAddress" placeholder="상세주소"><br>
+  <label for="sample6_postcode">우편번호:</label>
+  <input type="text" id="sample6_postcode" name="postcode" placeholder="우편번호" readonly><br>
+  <label for="sample6_extraAddress">참고항목:</label>
+  <input type="text" id="sample6_extraAddress" name="extraAddress" placeholder="참고항목" readonly><br>
   <label for="phoneNumber">전화번호:</label>
-  <input type="text" id="phoneNumber" name="phoneNumber" required><br><br>
+  <input type="text" id="phoneNumber" name="phoneNumber" placeholder="전화번호" required><br>
   <label for="email">이메일:</label>
-  <input type="email" id="email" name="email" required><br><br>
-  <button type="submit">제출</button>
+  <input type="email" id="email" name="email" placeholder="이메일" required><br>
+  <input type="button" onclick="submitForm()" value="제출">
 </form>
 </body>
 </html>

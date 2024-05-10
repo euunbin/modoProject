@@ -39,6 +39,7 @@ public class UserInfoController {
 
     @PostMapping("/userinfo")
     public String submitForm(UserInfo userInfo) {
+        userInfo.constructFullAddress();
         userInfoRepository.save(userInfo);
         httpSession.setAttribute("userInfo", userInfo);
         return "redirect:/userinfo/success";
