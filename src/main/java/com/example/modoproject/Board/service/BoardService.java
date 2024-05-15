@@ -82,5 +82,13 @@ public class BoardService {
         }
         return boardDtoList;
     }
+    public List<BoardDto> searchPosts(String keyword) {
+        List<Board> searchResults = boardRepository.findByTitleContainingOrContentContaining(keyword, keyword);
+        List<BoardDto> searchResultsDto = new ArrayList<>();
+        for (Board board : searchResults) {
+            searchResultsDto.add(BoardDto.from(board));
+        }
 
+        return searchResultsDto;
+    }
 }

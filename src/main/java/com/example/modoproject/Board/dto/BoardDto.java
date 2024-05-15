@@ -21,6 +21,18 @@ public class BoardDto {
     private LocalDateTime modifiedDate;
     private MultipartFile image;
     private byte[] imageData; // 이미지 데이터 필드 추가
+    public static BoardDto from(Board board) {
+        return BoardDto.builder()
+                .id(board.getId())
+                .author(board.getAuthor())
+                .title(board.getTitle())
+                .content(board.getContent())
+                .imagePath(board.getImagePath())
+                .category(board.getCategory())
+                .createdDate(board.getCreatedDate())
+                .modifiedDate(board.getModifiedDate())
+                .build();
+    }
 
     public Board toEntity() {
         return Board.builder()

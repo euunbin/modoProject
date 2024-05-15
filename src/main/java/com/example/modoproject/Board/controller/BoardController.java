@@ -164,4 +164,11 @@ public class BoardController {
         model.addAttribute("postList", boardDtoList);
         return "board/list.html";
     }
+    @GetMapping("/board/search/{keyword}") // (제목 + 본문) 키워드 검색
+    public String search(@PathVariable("keyword") String keyword, Model model) {
+        List<BoardDto> searchResults = boardService.searchPosts(keyword);
+        model.addAttribute("searchResults", searchResults);
+        return "board/searchResults";
+    }
+
 }
