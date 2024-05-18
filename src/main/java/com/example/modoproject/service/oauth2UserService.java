@@ -1,9 +1,6 @@
 package com.example.modoproject.service;
 
 import com.example.modoproject.entity.User;
-import com.example.modoproject.entity.UserInfo;
-import com.example.modoproject.repository.UserInfoRepository;
-import com.example.modoproject.repository.userRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,12 +20,6 @@ import java.util.logging.Logger;
 public class oauth2UserService extends DefaultOAuth2UserService {
 
     private static final Logger logger = Logger.getLogger(oauth2UserService.class.getName());
-
-    @Autowired
-    private userRepository userRepository;
-
-    @Autowired
-    private UserInfoRepository userInfoRepository;
 
     @Autowired
     private HttpSession httpSession;
@@ -76,25 +67,22 @@ public class oauth2UserService extends DefaultOAuth2UserService {
         logger.info("프로필 이미지 URL: " + profileImageUrl);
         logger.info("역할: " + role);
 
-        // DB에 저장
+        // 사용자 정보를 세션에 저장
         User user = new User();
         user.setNickname(nickname);
         user.setProfileImage(profileImageUrl);
         user.setRole(role);
         user.setClientId(userRequest.getClientRegistration().getRegistrationId());
         user.setProviderName(userRequest.getClientRegistration().getProviderDetails().getTokenUri());
-        userRepository.save(user);
+        // userRepository.save(user); // 데이터베이스 저장 로직 제거
 
         // 세션에 사용자 정보 저장
         httpSession.setAttribute("user", user);
 
-        // UserInfo 테이블에서 해당 사용자의 개인 정보 가져오기
-        UserInfo userInfo = userInfoRepository.findById(user.getId()).orElse(null);
-
-        // 개인 정보가 존재할 경우 세션에 저장
-        if (userInfo != null) {
-            httpSession.setAttribute("userInfo", userInfo);
-        }
+        // UserInfo userInfo = userInfoRepository.findById(user.getId()).orElse(null);
+        // if (userInfo != null) {
+        //     httpSession.setAttribute("userInfo", userInfo);
+        // }
 
         // nameAttributeKey
         String userNameAttributeName = userRequest.getClientRegistration()
@@ -108,4 +96,3 @@ public class oauth2UserService extends DefaultOAuth2UserService {
         return new DefaultOAuth2User(authorities, oAuth2User.getAttributes(), userNameAttributeName);
     }
 }
-

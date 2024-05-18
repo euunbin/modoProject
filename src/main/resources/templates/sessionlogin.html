@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>사용자 정보</title>
+</head>
+<body>
+<h1>사용자 정보</h1>
+<p>닉네임: <span th:text="${user.nickname}"></span></p>
+<p>프로필 이미지: <img th:src="${user.profileImage}"></p>
+<p>역할: <span th:text="${user.role}"></span></p>
+
+</body>
+</html>
