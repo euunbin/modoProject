@@ -27,6 +27,16 @@ public class loginController {
 
         return "login";
     }
+    @GetMapping("/logout")
+    public String logout(HttpServletRequest request) {
+
+        HttpSession session = request.getSession();
+        session.removeAttribute("userInfo");
+
+        session.invalidate();
+
+        return "login";
+    }
 
     @GetMapping("/sessionlogin")
     public String sessionLogin(Model model, HttpSession session) {
