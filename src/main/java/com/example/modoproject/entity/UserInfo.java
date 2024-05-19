@@ -4,9 +4,12 @@ import jakarta.persistence.*;
 
 @Entity
 public class UserInfo {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    private String externalId; // 카카오 사용자 고유 식별값
     private String phoneNumber;
     private String email;
     private String postcode;
@@ -15,12 +18,24 @@ public class UserInfo {
     private String extraAddress;
     private String fullAddress;
 
+    // Constructors
+    public UserInfo() {}
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
     public String getPhoneNumber() {
@@ -74,17 +89,17 @@ public class UserInfo {
     public String getFullAddress() {
         return fullAddress;
     }
+
     public void setFullAddress(String fullAddress) {
         this.fullAddress = fullAddress;
     }
 
-    // 전체 주소 가공
+    //전체 주소 가공
     public void constructFullAddress() {
-        if (!detailAddress.isEmpty()) {
+        if (detailAddress != null && !detailAddress.isEmpty()) {
             this.fullAddress = address + " " + detailAddress;
         } else {
             this.fullAddress = address;
         }
     }
-
 }

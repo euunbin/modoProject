@@ -39,6 +39,9 @@ public class UserInfoController {
 
     @PostMapping("/userinfo")
     public String submitForm(UserInfo userInfo) {
+        String externalId = (String) httpSession.getAttribute("externalId");
+        userInfo.setExternalId(externalId);
+
         userInfo.constructFullAddress();
         userInfoRepository.save(userInfo);
         httpSession.setAttribute("userInfo", userInfo);

@@ -5,60 +5,74 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "users")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(unique = true)
+    private String externalId;
     private String profileImageUrl;
     private String nickname;
-    private String profileImage;
     private String clientId;
     private String providerName;
     private String role;
 
     public User() {}
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
-
-    public void setProfileImage(String profileImage) {
-        this.profileImage = profileImage;
-    }
-
-    public void setClientId(String clientId) {
-        this.clientId = clientId;
-    }
-
-    public void setProviderName(String providerName) {
-        this.providerName = providerName;
-    }
-
-    public void setProfileImageUrl(String profileImageUrl) {
-        this.profileImageUrl = profileImageUrl;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public Long getId() {
         return id;
     }
 
-    public String getProfileImage() {
-        return profileImage;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public String getNickname() {
-        return nickname;
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 
     public String getProfileImageUrl() {
         return profileImageUrl;
     }
 
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
     public String getRole() {
         return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
