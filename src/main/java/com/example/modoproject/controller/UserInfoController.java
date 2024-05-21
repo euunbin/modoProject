@@ -16,6 +16,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import java.io.IOException;
+import java.util.List;
+
+import static com.mysql.cj.conf.PropertyKey.logger;
 
 @Controller
 public class UserInfoController {
@@ -40,11 +43,32 @@ public class UserInfoController {
     @PostMapping("/userinfo")
     public String submitForm(UserInfo userInfo) {
         String externalId = (String) httpSession.getAttribute("externalId");
-        userInfo.setExternalId(externalId);
 
-        userInfo.constructFullAddress();
-        userInfoRepository.save(userInfo);
-        httpSession.setAttribute("userInfo", userInfo);
+        if (externalId == null || externalId.isEmpty()) {
+            return "redirect:/userinfo"; // 로그인하지 않고 주소 저장 시 임의 페이지로 리턴
+        }
+
+        // 기존 UserInfo 검색
+        List<UserInfo> existingUserInfos = userInfoRepository.findByExternalId(externalId);
+
+        if (!existingUserInfos.isEmpty()) {
+            UserInfo existingUserInfo = existingUserInfos.get(0); // 첫 번째 결과 사용
+            existingUserInfo.setPhoneNumber(userInfo.getPhoneNumber());
+            existingUserInfo.setEmail(userInfo.getEmail());
+            existingUserInfo.setPostcode(userInfo.getPostcode());
+            existingUserInfo.setAddress(userInfo.getAddress());
+            existingUserInfo.setDetailAddress(userInfo.getDetailAddress());
+            existingUserInfo.setExtraAddress(userInfo.getExtraAddress());
+            existingUserInfo.constructFullAddress();
+            userInfoRepository.save(existingUserInfo);
+            httpSession.setAttribute("userInfo", existingUserInfo);
+        } else {
+            userInfo.setExternalId(externalId);
+            userInfo.constructFullAddress();
+            userInfoRepository.save(userInfo);
+            httpSession.setAttribute("userInfo", userInfo);
+        }
+
         return "redirect:/userinfo/success";
     }
 

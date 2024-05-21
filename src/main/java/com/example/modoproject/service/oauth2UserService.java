@@ -112,9 +112,9 @@ public class oauth2UserService extends DefaultOAuth2UserService {
         String detailAddress = (String) httpSession.getAttribute("detailAddress");
         String extraAddress = (String) httpSession.getAttribute("extraAddress");
 
-        UserInfo userInfo = userInfoRepository.findByExternalId(externalId);
+        UserInfo userInfo = (UserInfo) userInfoRepository.findByExternalId(externalId);
         if (userInfo == null) {
-            // 외부 ID를 가진 사용자 정보가 없는 경우 새로운 UserInfo 객체를 생성합니다.
+            // 주어진 외부 ID로 UserInfo 객체를 찾지 못한 경우 새로운 객체를 생성합니다.
             userInfo = new UserInfo();
             userInfo.setExternalId(externalId);
         }

@@ -8,7 +8,7 @@ public class UserInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Column(unique = true, nullable = false)
     private String externalId; // 카카오 사용자 고유 식별값
     private String phoneNumber;
     private String email;
@@ -29,6 +29,7 @@ public class UserInfo {
     public void setId(Long id) {
         this.id = id;
     }
+    @Column(unique = true, nullable = false)
 
     public String getExternalId() {
         return externalId;
