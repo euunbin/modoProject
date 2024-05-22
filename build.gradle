@@ -20,6 +20,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -36,7 +37,7 @@ dependencies {
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-
+    implementation 'com.github.iamport:iamport-rest-client-java:0.2.21'
 }
 
 tasks.named('test') {
