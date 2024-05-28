@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴 추가</title>
+    <script>
+        // 파일 선택 시 이미지 미리보기와 입력 필드를 생성하는 함수
+        function previewImages() {
+            var preview = document.getElementById('preview');
+            preview.innerHTML = ''; // 기존의 미리보기를 지웁니다.
+            var files = document.getElementById('image').files;
+
+            for (var i = 0; i < files.length; i++) {
+                var file = files[i];
+                var reader = new FileReader();
+                reader.onload = (function(file, index) {
+                    return function(e) {
+                        var div = document.createElement('div');
+                        div.innerHTML = `
+                            <img src="${e.target.result}" width="100" height="100" alt="Menu Image"><br>
+                            <label for="name">메뉴 이름:</label>
+                            <input type="text" name="names"><br>
+                            <label for="price">가격:</label>
+                            <input type="text" name="prices"><br>
+                        `;
+                        preview.appendChild(div);
+                    };
+                })(file, i);
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // 메뉴 필드를 추가하는 함수
+        function addMenuFields() {
+            var preview = document.getElementById('preview');
+            var div = document.createElement('div');
+            div.innerHTML = `
+                <label for="name">메뉴 이름:</label>
+                <input type="text" name="names"><br>
+                <label for="price">가격:</label>
+                <input type="text" name="prices"><br>
+                <label for="image">이미지 (선택사항):</label>
+                <input type="file" name="images"><br><br>
+            `;
+            preview.appendChild(div);
+        }
+
+        // 모든 메뉴를 저장하는 함수
+        function saveAllMenus() {
+            var form = document.getElementById('menuForm');
+            var formData = new FormData(form);
+
+            fetch('/menus/addAll', {
+                method: 'POST',
+                body: formData
+            }).then(response => {
+                if (response.ok) {
+                    alert('모든 메뉴가 성공적으로 저장되었습니다');
+                    // 파일 선택 초기화
+                    document.getElementById('image').value = '';
+                    // 프리뷰 초기화
+                    document.getElementById('preview').innerHTML = '';
+                } else {
+                    alert('메뉴 저장 오류');
+                }
+            }).catch(error => {
+                alert('오류: ' + error);
+            });
+        }
+    </script>
+</head>
+<body>
+<h1>새 메뉴 추가</h1>
+<form id="menuForm" enctype="multipart/form-data">
+    <label for="companyId">회사 ID:</label><br>
+    <input type="text" id="companyId" name="companyId"><br><br>
+
+    <label for="image">이미지:</label><br>
+    <input type="file" id="image" name="images" multiple onchange="previewImages()"><br><br>
+
+    <div id="preview"></div>
+
+    <!-- 메뉴 필드 추가 버튼 -->
+    <button type="button" onclick="addMenuFields()">메뉴 추가</button>
+    <!-- 모든 메뉴 저장 버튼 -->
+    <button type="button" onclick="saveAllMenus()">모든 메뉴 저장</button>
+    <!-- 메뉴 리스트 페이지로 돌아가는 버튼 -->
+    <a href="http://localhost:8080/menus/list"><input type="button" value="리스트로 돌아가기"></a>
+</form>
+</body>
+</html>

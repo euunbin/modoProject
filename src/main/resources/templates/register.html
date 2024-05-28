@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>업체 등록</title>
+</head>
+<body>
+<h1>업체 등록</h1>
+<form action="#" th:action="@{/stores}" th:object="${store}" method="post">
+    <label for="name">업체명:</label>
+    <input type="text" id="name" th:field="*{name}" /><br/>
+
+    <label for="foodType">음식종류:</label>
+    <input type="text" id="foodType" th:field="*{foodType}" /><br/>
+
+    <label for="address">가게주소:</label>
+    <input type="text" id="address" th:field="*{address}" /><br/>
+
+    <label for="imageUrl">가게 이미지 URL:</label>
+    <input type="text" id="imageUrl" th:field="*{imageUrl}" /><br/>
+
+    <label for="phoneNumber">가게 전화번호:</label>
+    <input type="text" id="phoneNumber" th:field="*{phoneNumber}" /><br/>
+
+    <label for="description">본문:</label>
+    <textarea id="description" th:field="*{description}"></textarea><br/>
+
+    <button type="submit">등록</button>
+</form>
+</body>
+</html>
