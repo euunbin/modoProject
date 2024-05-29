@@ -17,6 +17,15 @@ public class Store{
     private String phoneNumber;
     private String description;
     private LocalDateTime registrationDate;
+    private String companyId; //업체ID, 가맹점 식별 코드
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
 
     // Getters and Setters
     public Long getId() {

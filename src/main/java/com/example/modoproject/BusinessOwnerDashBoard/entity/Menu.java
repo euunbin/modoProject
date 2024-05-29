@@ -7,18 +7,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import java.util.Date;
 
-@Entity
+@Entity// 데이터 마이그레이션 합집합, 업체마다
+//회사마다 api를 만든다, 요청하는 것을 자동으로 필요한 것만
 public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long companyId;
+    private Long companyId; //업체ID, 가맹점 식별 코드
     private String name;
     private double price;
     private Date createdAt;
     private String imageUrl;
+    private String merchanUid; // 새로운 필드 추가
 
-    // getters and setters
+    public String getMerchanUid() {
+        return merchanUid;
+    }
+
+    public void setMerchanUid(String merchanUid) {
+        this.merchanUid = merchanUid;
+    }
+
     public Long getId() {
         return id;
     }
