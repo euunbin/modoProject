@@ -20,34 +20,72 @@
 </div>
 
 <script>
-    // 문서가 준비되면 제일 먼저 실행
     $(document).ready(function(){
         $("#iamportPayment").click(function(){
-            iamportPayment(); // 버튼 클릭하면 호출
+            fetchUserNicknameAndInfo(); // 버튼 클릭하면 호출
         });
     });
 
-    // 버튼 클릭하면 실행
-    function iamportPayment() {
+    function fetchUserNicknameAndInfo() {
+        $.get("login/user/nickname", function(nicknameData) {
+            $.get("login/user/info", function(infoData) {
+                // nicknameData와 infoData를 결합하여 iamportPayment 함수 호출
+                iamportPayment(nicknameData, infoData);
+            });
+        });
+    }
+
+    function iamportPayment(userNickname, userInfo) {
         IMP.init('imp22705083'); // 아임포트 관리자 콘솔에서 확인한 '가맹점 식별코드' 입력
+
+        initiatePayment(userNickname, userInfo); // 결제 요청 함수 호출 및 사용자 정보 전달
+    }
+
+    function initiatePayment(userNickname, userInfo) {
         IMP.request_pay({
             // param
             pg: "html5_inicis", // pg사명 or pg사명.CID (잘못 입력할 경우, 기본 PG사가 띄워짐)
             pay_method: "card", // 지불 방법
-            merchant_uid: "54350582288376312", // 가맹점 주문번호 (아임포트를 사용하는 가맹점에서 중복되지 않은 임의의 문자열을 입력)
-            name: "상품", // 결제창에 노출될 상품명
+            merchant_uid: 'merchant_' + new Date().getTime(), // 가맹점 주문번호
+            name: "결제테스트", // 결제창에 노출될 상품명
             amount: 100, // 금액
-            buyer_email : "fishman4535@gmail.com",
-            buyer_name : "홍길동",
-            buyer_tel : "01012341234"
+            buyer_email : userInfo.email, // 서버에서 가져온 사용자 이메일
+            buyer_name : userNickname, // 세션에서 가져온 사용자 닉네임
+            buyer_tel : userInfo.phoneNumber, // 서버에서 가져온 사용자 전화번호
+            buyer_addr : userInfo.fullAddress // 서버에서 가져온 사용자 전체 주소
         }, function (rsp) { // callback
             if (rsp.success) {
                 alert("[완료] imp_uid : " + rsp.imp_uid + " / merchant_uid : " + rsp.merchant_uid);
+
+                // 결제 완료 후 서버에 데이터 전송
+                $.ajax({
+                    url: '/payment/callback',
+                    method: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        pg: rsp.pg_provider,
+                        payMethod: rsp.pay_method,
+                        merchantUid: rsp.merchant_uid,
+                        name: rsp.name,
+                        amount: rsp.paid_amount,
+                        buyerEmail: rsp.buyer_email,
+                        buyerName: rsp.buyer_name,
+                        buyerTel: rsp.buyer_tel,
+                        buyerAddr: rsp.buyer_addr
+                    }),
+                    success: function(response) {
+                        console.log(response);
+                    },
+                    error: function(error) {
+                        console.error(error);
+                    }
+                });
             } else {
                 alert("[실패] 코드(" + rsp.error_code + ") / 메세지(" + rsp.error_msg + ")");
             }
         });
     }
+
 </script>
 </body>
 </html>
