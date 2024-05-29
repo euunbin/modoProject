@@ -14,6 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import java.io.IOException;
 import java.util.List;
@@ -85,6 +87,21 @@ public class UserInfoController {
             return "user_info";
         } else {
             return "userinforeturn"; //userInfo가 null값인 경우, 임의 페이지로 리턴되도록 설정해둠
+        }
+    }
+
+    @GetMapping("/login/user/info")
+    @ResponseBody
+    public UserInfo getUserInfo() {
+        String userExternalId = (String) httpSession.getAttribute("externalId");
+        List<UserInfo> userInfos = userInfoRepository.findByExternalId(userExternalId);
+
+        if (!userInfos.isEmpty()) {
+            UserInfo userInfo = userInfos.get(0);
+            userInfo.constructFullAddress();
+            return userInfo;
+        } else {
+            return null;
         }
     }
 
