@@ -1,6 +1,6 @@
-package com.example.modoproject.repository;
+package com.example.modoproject.login.repository;
 
-import com.example.modoproject.entity.User;
+import com.example.modoproject.login.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

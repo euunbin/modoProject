@@ -1,4 +1,4 @@
-package com.example.modoproject.configuration;
+package com.example.modoproject.login.configuration;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.core.Authentication;

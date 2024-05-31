@@ -1,8 +1,8 @@
-package com.example.modoproject.service;
+package com.example.modoproject.login.service;
 
-import com.example.modoproject.entity.User;
-import com.example.modoproject.entity.UserInfo;
-import com.example.modoproject.repository.UserInfoRepository;
+import com.example.modoproject.login.entity.User;
+import com.example.modoproject.login.entity.UserInfo;
+import com.example.modoproject.login.repository.UserInfoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;

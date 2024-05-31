@@ -1,6 +1,6 @@
-package com.example.modoproject.controller;
+package com.example.modoproject.login.controller;
 
-import com.example.modoproject.entity.User; // 올바른 User 클래스 import
+import com.example.modoproject.login.entity.User; // 올바른 User 클래스 import
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,4 +1,4 @@
-package com.example.modoproject.entity;
+package com.example.modoproject.login.entity;
 
 import jakarta.persistence.*;
 

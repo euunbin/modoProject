@@ -1,26 +1,16 @@
-package com.example.modoproject.controller;
+package com.example.modoproject.login.controller;
 
-import com.example.modoproject.entity.UserInfo;
-import com.example.modoproject.repository.UserInfoRepository;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+import com.example.modoproject.login.entity.UserInfo;
+import com.example.modoproject.login.repository.UserInfoRepository;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.HttpSessionRequiredException;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.SessionAttribute;
 
-import java.io.IOException;
 import java.util.List;
-
-import static com.mysql.cj.conf.PropertyKey.logger;
 
 @Controller
 public class UserInfoController {
