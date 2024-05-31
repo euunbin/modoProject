@@ -5,9 +5,7 @@ import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class StoreController {
@@ -23,6 +21,25 @@ public class StoreController {
     @PostMapping("/stores")
     public String registerStore(@ModelAttribute Store store) {
         storeService.registerStore(store);
+        return "redirect:/stores";
+    }
+
+
+
+    @GetMapping("/stores/edit/{companyId}")
+    public String showEditForm(@PathVariable String companyId, Model model) {
+        Store store = storeService.findByCompanyId(companyId);
+        if (store != null) {
+            model.addAttribute("store", store);
+            return "storeupdate";
+        } else {
+            return "redirect:/stores"; // 가게를 찾을 수 없는 경우
+        }
+    }
+
+    @PostMapping("/stores/edit/{companyId}")
+    public String updateStore(@PathVariable String companyId, @ModelAttribute Store store) {
+        storeService.updateStore(companyId, store);
         return "redirect:/stores";
     }
 }

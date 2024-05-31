@@ -12,8 +12,25 @@ public class StoreService {
     @Autowired
     private StoreRepository storeRepository;
 
+
     public Store registerStore(Store store) {
         store.setRegistrationDate(LocalDateTime.now());
         return storeRepository.save(store);
+    }
+
+    public Store findByCompanyId(String companyId) {
+        return storeRepository.findByCompanyId(companyId);
+    }
+
+    public Store updateStore(String companyId, Store updatedStore) {
+        Store store = storeRepository.findByCompanyId(companyId);
+        if (store != null) {
+            store.setName(updatedStore.getName());
+            store.setAddress(updatedStore.getAddress());
+            store.setPhoneNumber(updatedStore.getPhoneNumber());
+            return storeRepository.save(store);
+        } else {
+            return null;
+        }
     }
 }
