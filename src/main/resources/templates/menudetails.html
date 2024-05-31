@@ -7,9 +7,19 @@
 </head>
 <body>
 <h1>Menu Details</h1>
-<p>MerchanUid: <span th:text="${merchanUid}"></span></p>
-<p>Menu Name: <span th:text="${menuName}"></span></p>
-<p>Price: <span th:text="${price}"></span></p>
+<p>MerchanUid: <span th:text="${merchanUid}" id="merchanUid"></span></p>
+<p>Menu Name: <span th:text="${menuName}" id="menuName"></span></p>
+<p>Price: <span th:text="${price}" id="price"></span></p>
+<button id="payButton">결제하기</button>
 <a href="/menus/list"><input type="button" value="목록으로 돌아가기"></a>
+<script>
+  document.getElementById("payButton").addEventListener("click", function() {
+    var merchanUid = document.getElementById("merchanUid").innerText;
+    var menuName = document.getElementById("menuName").innerText;
+    var price = document.getElementById("price").innerText;
+
+    window.location.href = "/iamport?merchanUid=" + merchanUid + "&menuName=" + menuName + "&price=" + price;
+  });
+</script>
 </body>
 </html>
