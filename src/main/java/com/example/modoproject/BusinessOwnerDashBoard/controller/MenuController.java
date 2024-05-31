@@ -1,5 +1,6 @@
 package com.example.modoproject.BusinessOwnerDashBoard.controller;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,8 +41,7 @@ public class MenuController {
         if (index < 0 || index >= images.length) {
             throw new IllegalArgumentException("Invalid image index"); // 유효하지 않은 인덱스에 대한 예외 처리
         }
-        // 가격을 double로 변환하여 전달합니다.
-        menuService.saveMenu(companyId, names[index], Double.parseDouble(prices[index]), images[index]);
+        menuService.saveMenu(companyId, names[index], Integer.parseInt(prices[index]), images[index]);
         return "redirect:/menus/add"; // 메뉴 추가 후 "menuadd" 페이지로 리디렉션합니다.
     }
 
@@ -52,8 +52,18 @@ public class MenuController {
                               @RequestParam("images") MultipartFile[] images) throws IOException {
         for (int i = 0; i < names.length; i++) {
             MultipartFile image = (images.length > i) ? images[i] : null; // 이미지 배열의 범위를 벗어나지 않도록 합니다.
-            menuService.saveMenu(companyId, names[i], Double.parseDouble(prices[i]), image); // 메뉴를 저장합니다.
+            menuService.saveMenu(companyId, names[i], Integer.parseInt(prices[i]), image); // 메뉴를 저장합니다.
         }
         return "redirect:/menus/add"; // 모든 메뉴 추가 후 "menuadd" 페이지로 리디렉션합니다.
+    }
+    @GetMapping("/{merchanUid}/{menuName}/{price}")
+    public String showMenuDetails(@PathVariable String merchanUid,
+                                  @PathVariable String menuName,
+                                  @PathVariable int price,
+                                  Model model) {
+        model.addAttribute("merchanUid", merchanUid);
+        model.addAttribute("menuName", menuName);
+        model.addAttribute("price", price);
+        return "menudetails";
     }
 }

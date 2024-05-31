@@ -15,7 +15,7 @@ public class Menu {
     private Long id;
     private Long companyId; //업체ID, 가맹점 식별 코드
     private String name;
-    private double price;
+    private int price;
     private Date createdAt;
     private String imageUrl;
     private String merchanUid; // 새로운 필드 추가
@@ -52,11 +52,11 @@ public class Menu {
         this.name = name;
     }
 
-    public double getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

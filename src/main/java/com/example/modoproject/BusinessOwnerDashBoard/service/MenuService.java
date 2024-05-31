@@ -1,8 +1,9 @@
 package com.example.modoproject.BusinessOwnerDashBoard.service;
 
-import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
 import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
+import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,7 +24,7 @@ public class MenuService {
         return menuRepository.findAll();
     }
 
-    public Menu saveMenu(Long companyId, String name, double price, MultipartFile image) throws IOException {
+    public Menu saveMenu(Long companyId, String name, int price, MultipartFile image) throws IOException {
         Menu menu = new Menu();
         menu.setCompanyId(companyId);
         menu.setName(name);

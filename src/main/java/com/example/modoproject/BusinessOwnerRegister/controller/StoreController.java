@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 public class StoreController {
     @Autowired
@@ -24,7 +26,12 @@ public class StoreController {
         return "redirect:/stores";
     }
 
-
+    @GetMapping("/stores")
+    public String listStores(Model model) {
+        List<Store> stores = storeService.findAllStores();
+        model.addAttribute("stores", stores);
+        return "storeList";
+    }
 
     @GetMapping("/stores/edit/{companyId}")
     public String showEditForm(@PathVariable String companyId, Model model) {
