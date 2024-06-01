@@ -20,6 +20,7 @@ public class BoardDto {
     private LocalDateTime createdDate;
     private LocalDateTime modifiedDate;
     private MultipartFile image;
+    private String type;
     private byte[] imageData; // 이미지 데이터 필드 추가
     public static BoardDto from(Board board) {
         return BoardDto.builder()
@@ -31,6 +32,7 @@ public class BoardDto {
                 .category(board.getCategory())
                 .createdDate(board.getCreatedDate())
                 .modifiedDate(board.getModifiedDate())
+                .type(board.getType())
                 .build();
     }
 
@@ -42,11 +44,12 @@ public class BoardDto {
                 .content(content)
                 .imagePath(imagePath) // Board 엔티티에 이미지 경로 설정
                 .category(category)
+                .type(type)
                 .build();
     }
 
     @Builder
-    public BoardDto(Long id, String author, String title, String content, String imagePath, String category, LocalDateTime createdDate, LocalDateTime modifiedDate) {
+    public BoardDto(Long id, String author, String title, String content, String imagePath, String category, LocalDateTime createdDate, LocalDateTime modifiedDate, String type) {
         this.id = id;
         this.author = author;
         this.title = title;
@@ -55,6 +58,8 @@ public class BoardDto {
         this.category = category;
         this.createdDate = createdDate;
         this.modifiedDate = modifiedDate;
+        this.type = type;
+
     }
 
     // 이미지 데이터를 저장하는 setter

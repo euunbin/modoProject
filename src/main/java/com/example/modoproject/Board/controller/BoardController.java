@@ -33,20 +33,20 @@ public class BoardController {
         this.boardService = boardService;
     }
 
-    @GetMapping("/")
+    @GetMapping("/board")
     public String list(Model model) {
         List<BoardDto> boardDtoList = boardService.getBoardList();
         model.addAttribute("postList", boardDtoList);
         return "board/list.html";
     }
 
-    @GetMapping("/post")
+    @GetMapping("/board/post")
     public String post() {
 
         return "board/post.html";
     }
 
-    @PostMapping("/post")
+    @PostMapping("/board/post")
     public String write(BoardDto boardDto, @RequestParam("image") MultipartFile image, Model model) {
         try {
             if (image != null && !image.isEmpty()) {
@@ -67,7 +67,8 @@ public class BoardController {
             // 이미지 데이터를 읽어오는데 실패한 경우 예외 처리
             // 실패 시에는 그냥 빈 이미지로 저장되거나, 에러 메시지를 보여주고 다시 입력받는 등의 처리가 필요할 수 있습니다.
         }
-
+// 새로 추가된 게시글은 type을 "공지사항"으로 설정
+        boardDto.setType("공지사항");
         boardService.savePost(boardDto);
         return "redirect:/";
     }
@@ -104,22 +105,27 @@ public class BoardController {
     }
 
 
-    @GetMapping("/post/{id}")
+    @GetMapping("/board/post/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         BoardDto boardDto = boardService.getPost(id);
         model.addAttribute("post", boardDto);
         return "board/detail.html";
     }
 
-    @GetMapping("/post/edit/{id}")
+    @GetMapping("/board/post/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         BoardDto boardDto = boardService.getPost(id);
         model.addAttribute("post", boardDto);
         return "board/edit.html";
     }
 
-    @PutMapping("/post/edit/{id}")
+    @PutMapping("/board/post/edit/{id}")
     public String update(BoardDto boardDto, @RequestParam(value = "image", required = false) MultipartFile image) {
+        if (boardDto.getId() != null) {
+            BoardDto existingPost = boardService.getPost(boardDto.getId());
+            boardDto.setType(existingPost.getType()); // 기존 type 값을 유지
+        }
+
         try {
             // 이미지를 변경했을 때만 새로운 이미지를 업로드하고 이미지 경로를 설정합니다.
             if (image != null && !image.isEmpty()) {
@@ -136,12 +142,13 @@ public class BoardController {
         }
 
         boardService.savePost(boardDto);
-        return "redirect:/";
+        return "redirect:/board";
     }
 
 
 
-    @DeleteMapping("/post/{id}")
+
+    @DeleteMapping("/board/post/{id}")
     public String delete(@PathVariable("id") Long id) {
         boardService.deletePost(id);
         return "redirect:/";

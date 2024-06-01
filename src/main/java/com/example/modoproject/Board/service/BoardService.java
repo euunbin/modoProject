@@ -11,7 +11,7 @@ import java.util.List;
 
 @Service
 public class BoardService {
-    private BoardRepository boardRepository;
+    private final BoardRepository boardRepository;
 
     public BoardService(BoardRepository boardRepository) {
         this.boardRepository = boardRepository;
@@ -19,7 +19,13 @@ public class BoardService {
 
     @Transactional
     public Long savePost(BoardDto boardDto) {
-        return boardRepository.save(boardDto.toEntity()).getId();
+        Board board;
+        if (boardDto.getId() != null) {
+            board = boardRepository.findById(boardDto.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+            boardDto.setType(board.getType()); // 기존 type 값을 유지
+        }
+        board = boardDto.toEntity();
+        return boardRepository.save(board).getId();
     }
 
     @Transactional
@@ -27,15 +33,16 @@ public class BoardService {
         List<Board> boardList = boardRepository.findAll();
         List<BoardDto> boardDtoList = new ArrayList<>();
 
-        for(Board board : boardList) {
+        for (Board board : boardList) {
             BoardDto boardDto = BoardDto.builder()
                     .id(board.getId())
                     .author(board.getAuthor())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .imagePath(board.getImagePath()) // 이미지 경로 추가
+                    .imagePath(board.getImagePath())
                     .category(board.getCategory())
                     .createdDate(board.getCreatedDate())
+                    .type(board.getType()) // type 추가
                     .build();
             boardDtoList.add(boardDto);
         }
@@ -44,16 +51,17 @@ public class BoardService {
 
     @Transactional
     public BoardDto getPost(Long id) {
-        Board board = boardRepository.findById(id).get();
+        Board board = boardRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
 
         BoardDto boardDto = BoardDto.builder()
                 .id(board.getId())
                 .author(board.getAuthor())
                 .title(board.getTitle())
                 .content(board.getContent())
-                .imagePath(board.getImagePath()) // 이미지 경로 추가
+                .imagePath(board.getImagePath())
                 .category(board.getCategory())
                 .createdDate(board.getCreatedDate())
+                .type(board.getType()) // type 추가
                 .build();
         return boardDto;
     }
@@ -68,27 +76,28 @@ public class BoardService {
         List<Board> boardList = boardRepository.findByCategory(category);
         List<BoardDto> boardDtoList = new ArrayList<>();
 
-        for(Board board : boardList) {
+        for (Board board : boardList) {
             BoardDto boardDto = BoardDto.builder()
                     .id(board.getId())
                     .author(board.getAuthor())
                     .title(board.getTitle())
                     .content(board.getContent())
-                    .imagePath(board.getImagePath()) // 이미지 경로 추가
+                    .imagePath(board.getImagePath())
                     .category(board.getCategory())
                     .createdDate(board.getCreatedDate())
+                    .type(board.getType()) // type 추가
                     .build();
             boardDtoList.add(boardDto);
         }
         return boardDtoList;
     }
+
     public List<BoardDto> searchPosts(String keyword) {
         List<Board> searchResults = boardRepository.findByTitleContainingOrContentContaining(keyword, keyword);
         List<BoardDto> searchResultsDto = new ArrayList<>();
         for (Board board : searchResults) {
             searchResultsDto.add(BoardDto.from(board));
         }
-
         return searchResultsDto;
     }
 }

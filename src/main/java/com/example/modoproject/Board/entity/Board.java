@@ -45,13 +45,18 @@ public class Board {
     @Column(length = 10, nullable = false)
     private String category;
 
+    @Column(length = 10, nullable = true)
+    private String type;
+
     @Builder
-    public Board(Long id, String author, String title, String content, String imagePath, String category) {
+    public Board(Long id, String author, String title, String content, String imagePath, String category, String type) {
+
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
         this.imagePath = imagePath;
         this.category = category;
+        this.type = type;
     }
 }
