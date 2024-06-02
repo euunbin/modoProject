@@ -29,6 +29,7 @@ public class StoreService {
             store.setName(updatedStore.getName());
             store.setAddress(updatedStore.getAddress());
             store.setPhoneNumber(updatedStore.getPhoneNumber());
+            store.setDescription(updatedStore.getDescription());
             return storeRepository.save(store);
         } else {
             return null;

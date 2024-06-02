@@ -8,15 +8,19 @@
 <form th:action="@{/stores/edit/{companyId}(companyId=${store.companyId})}" th:object="${store}" method="post">
     <input type="hidden" th:field="*{id}" />
     <div>
-        <label>Name:</label>
+        <label>업체명:</label>
         <input type="text" th:field="*{name}" />
     </div>
     <div>
-        <label>Address:</label>
+        <label>주소:</label>
         <input type="text" th:field="*{address}" />
     </div>
     <div>
-        <label>Phone Number:</label>
+        <label>공지사항:</label>
+        <input type="text" th:field="*{description}" />
+    </div>
+    <div>
+        <label>가게 전화번호:</label>
         <input type="text" th:field="*{phoneNumber}" />
     </div>
     <div>
