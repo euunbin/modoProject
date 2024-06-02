@@ -3,6 +3,7 @@ package com.example.modoproject.login.service;
 import com.example.modoproject.login.entity.User;
 import com.example.modoproject.login.entity.UserInfo;
 import com.example.modoproject.login.repository.UserInfoRepository;
+import com.example.modoproject.login.repository.userRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -14,6 +15,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import jakarta.servlet.http.HttpSession;
+
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -28,6 +30,9 @@ public class oauth2UserService extends DefaultOAuth2UserService {
 
     @Autowired
     private UserInfoRepository userInfoRepository;
+
+    @Autowired
+    private userRepository userRepository;
 
     @Override
     @Transactional
@@ -84,13 +89,19 @@ public class oauth2UserService extends DefaultOAuth2UserService {
         // 세션에 사용자 정보 저장
         httpSession.setAttribute("externalId", externalId);// 세션에 사용자 ID 저장
 
-        // 사용자 정보를 세션에 저장
-        User user = new User();
-        user.setNickname(nickname);
-        user.setProfileImageUrl(profileImageUrl);
-        user.setClientId(userRequest.getClientRegistration().getRegistrationId());
-        user.setProviderName(userRequest.getClientRegistration().getProviderDetails().getTokenUri());
-        user.setRole(role);
+        // 사용자 정보를 세션에 저장 및 데이터베이스에 저장
+        User user = userRepository.findByExternalId(externalId);
+        if (user == null) {
+            user = new User();
+            user.setExternalId(externalId);
+            user.setNickname(nickname);
+            user.setProfileImageUrl(profileImageUrl);
+            user.setClientId(userRequest.getClientRegistration().getRegistrationId());
+            user.setProviderName(userRequest.getClientRegistration().getProviderDetails().getTokenUri());
+            user.setRole(role);
+            user = userRepository.save(user);
+        }
+
         httpSession.setAttribute("user", user);
 
         String userNameAttributeName = userRequest.getClientRegistration()
@@ -100,6 +111,9 @@ public class oauth2UserService extends DefaultOAuth2UserService {
 
         // Role 생성
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(role);
+
+        // 사용자 정보 저장
+        saveAddressAndExternalIdForCurrentUser(externalId);
 
         return new DefaultOAuth2User(authorities, oAuth2User.getAttributes(), userNameAttributeName);
     }
@@ -112,23 +126,24 @@ public class oauth2UserService extends DefaultOAuth2UserService {
         String detailAddress = (String) httpSession.getAttribute("detailAddress");
         String extraAddress = (String) httpSession.getAttribute("extraAddress");
 
-        UserInfo userInfo = (UserInfo) userInfoRepository.findByExternalId(externalId);
-        if (userInfo == null) {
-            // 주어진 외부 ID로 UserInfo 객체를 찾지 못한 경우 새로운 객체를 생성합니다.
-            userInfo = new UserInfo();
-            userInfo.setExternalId(externalId);
+        // 모든 필수 정보가 존재하는 경우에만 저장
+        if (phoneNumber != null && email != null && postcode != null && address != null && detailAddress != null && extraAddress != null) {
+            List<UserInfo> userInfoList = userInfoRepository.findByExternalId(externalId);
+            UserInfo userInfo = userInfoList.isEmpty() ? null : userInfoList.get(0);
+            if (userInfo == null) {
+                userInfo = new UserInfo();
+                userInfo.setExternalId(externalId);
+            }
+
+            userInfo.setPhoneNumber(phoneNumber);
+            userInfo.setEmail(email);
+            userInfo.setPostcode(postcode);
+            userInfo.setAddress(address);
+            userInfo.setDetailAddress(detailAddress);
+            userInfo.setExtraAddress(extraAddress);
+            userInfo.constructFullAddress();
+
+            userInfoRepository.save(userInfo);
         }
-
-        userInfo.setPhoneNumber(phoneNumber);
-        userInfo.setEmail(email);
-        userInfo.setPostcode(postcode);
-        userInfo.setAddress(address);
-        userInfo.setDetailAddress(detailAddress);
-        userInfo.setExtraAddress(extraAddress);
-        userInfo.constructFullAddress();
-
-        userInfoRepository.save(userInfo);
     }
 }
-
-
