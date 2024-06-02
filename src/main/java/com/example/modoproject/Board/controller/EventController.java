@@ -1,12 +1,12 @@
 package com.example.modoproject.Board.controller;
 
 import com.example.modoproject.Board.dto.BoardDto;
-
 import com.example.modoproject.Board.service.BoardService;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-
+import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,37 +16,36 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
-
-
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
+import java.util.stream.Collectors;
 
 
 @Controller
-public class BoardController {
+public class EventController {
     private BoardService boardService;
-    private static final String UPLOAD_DIR = "src/main/resources/static/uploads";
-    private static final String UPLOAD_DIR2 = "uploads";
+    private static final String UPLOAD_DIR = "src/main/resources/static/boardImg/event";
+    private static final String UPLOAD_DIR2 = "event";
 
-    public BoardController(BoardService boardService) {
+    public EventController(BoardService boardService) {
         this.boardService = boardService;
     }
 
-    @GetMapping("/board")
+    @GetMapping("/event")
     public String list(Model model) {
         List<BoardDto> boardDtoList = boardService.getBoardList();
-        model.addAttribute("postList", boardDtoList);
-        return "board/list.html";
+        List<BoardDto> noticeList = boardDtoList.stream()
+                .filter(post -> "이벤트".equals(post.getType()))
+                .collect(Collectors.toList());
+        model.addAttribute("postList", noticeList);
+        return "board/event/list.html";
     }
 
-    @GetMapping("/board/post")
+    @GetMapping("/event/post")
     public String post() {
 
-        return "board/post.html";
+        return "board/event/post.html";
     }
 
-    @PostMapping("/board/post")
+    @PostMapping("/event/post")
     public String write(BoardDto boardDto, @RequestParam("image") MultipartFile image, Model model) {
         try {
             if (image != null && !image.isEmpty()) {
@@ -67,10 +66,10 @@ public class BoardController {
             // 이미지 데이터를 읽어오는데 실패한 경우 예외 처리
             // 실패 시에는 그냥 빈 이미지로 저장되거나, 에러 메시지를 보여주고 다시 입력받는 등의 처리가 필요할 수 있습니다.
         }
-// 새로 추가된 게시글은 type을 "공지사항"으로 설정
-        boardDto.setType("공지사항");
+// 새로 추가된 게시글은 type을 "이벤트"으로 설정
+        boardDto.setType("이벤트");
         boardService.savePost(boardDto);
-        return "redirect:/";
+        return "redirect:/event";
     }
 
 
@@ -105,35 +104,36 @@ public class BoardController {
     }
 
 
-    @GetMapping("/board/post/{id}")
+    @GetMapping("/event/post/{id}")
     public String detail(@PathVariable("id") Long id, Model model) {
         BoardDto boardDto = boardService.getPost(id);
         model.addAttribute("post", boardDto);
-        return "board/detail.html";
+        return "board/event/detail.html";
     }
 
-    @GetMapping("/board/post/edit/{id}")
+    @GetMapping("/event/post/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         BoardDto boardDto = boardService.getPost(id);
         model.addAttribute("post", boardDto);
-        return "board/edit.html";
+        return "board/event/edit.html";
     }
 
-    @PutMapping("/board/post/edit/{id}")
-    public String update(BoardDto boardDto, @RequestParam(value = "image", required = false) MultipartFile image) {
+    @PutMapping("/event/post/edit/{id}")
+    public String update(BoardDto boardDto, @RequestParam(value = "image", required = false) MultipartFile image, Model model) {
         if (boardDto.getId() != null) {
             BoardDto existingPost = boardService.getPost(boardDto.getId());
             boardDto.setType(existingPost.getType()); // 기존 type 값을 유지
         }
 
         try {
-            // 이미지를 변경했을 때만 새로운 이미지를 업로드하고 이미지 경로를 설정합니다.
+            // 수정된 부분: 이미지를 변경했을 때만 새로운 이미지를 업로드하고 이미지 경로를 설정합니다.
             if (image != null && !image.isEmpty()) {
                 boardDto.setImageData(image.getBytes());
                 String imagePath = saveImage(image);
                 boardDto.setImagePath(imagePath);
+                model.addAttribute("imagePath", "/" + boardDto.getImagePath());
             } else {
-                // 이미지를 변경하지 않았을 때는 기존 이미지 경로를 유지합니다.
+                // 수정된 부분: 이미지를 변경하지 않았을 때는 기존 이미지 경로를 유지합니다.
                 BoardDto existingPost = boardService.getPost(boardDto.getId());
                 boardDto.setImagePath(existingPost.getImagePath());
             }
@@ -142,19 +142,20 @@ public class BoardController {
         }
 
         boardService.savePost(boardDto);
-        return "redirect:/board";
+        return "redirect:/event";
     }
 
 
 
 
-    @DeleteMapping("/board/post/{id}")
+
+    @DeleteMapping("/event/post/{id}")
     public String delete(@PathVariable("id") Long id) {
         boardService.deletePost(id);
-        return "redirect:/";
+        return "redirect:/event";
     }
 
-    @GetMapping("/board/getCategory/{id}")
+    @GetMapping("/event/getCategory/{id}")
     @ResponseBody
     public String getCategory(@PathVariable("id") Long id) {
         BoardDto boardDto = boardService.getPost(id);
@@ -165,17 +166,17 @@ public class BoardController {
         return Arrays.asList("한식", "중식", "일식", "양식");
     }
 
-    @GetMapping("/board/category/{category}")
+    @GetMapping("/event/category/{category}")
     public String getPostsByCategory(@PathVariable("category") String category, Model model) {
         List<BoardDto> boardDtoList = boardService.getBoardListByCategory(category);
         model.addAttribute("postList", boardDtoList);
-        return "board/list.html";
+        return "board/event/list.html";
     }
-    @GetMapping("/board/search/{keyword}") // (제목 + 본문) 키워드 검색
+    @GetMapping("/event/search/{keyword}") // (제목 + 본문) 키워드 검색
     public String search(@PathVariable("keyword") String keyword, Model model) {
         List<BoardDto> searchResults = boardService.searchPosts(keyword);
         model.addAttribute("searchResults", searchResults);
-        return "board/searchResults";
+        return "board/event/searchResults";
     }
 
 }
