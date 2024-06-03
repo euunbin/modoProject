@@ -1,9 +1,7 @@
 package com.example.modoproject.Review.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Review {
@@ -16,6 +14,8 @@ public class Review {
     private String author;
     private String content;
     private String imageUrl;
+
+    private LocalDateTime createdDateTime;
 
     // Getters and Setters
     public Long getId() {
@@ -56,5 +56,20 @@ public class Review {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
+    }
+
+    public LocalDateTime getCreatedDateTime() {
+        return createdDateTime;
+    }
+
+    public void setCreatedDateTime(LocalDateTime createdDateTime) {
+        this.createdDateTime = createdDateTime;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdDateTime == null) {
+            this.createdDateTime = LocalDateTime.now();
+        }
     }
 }

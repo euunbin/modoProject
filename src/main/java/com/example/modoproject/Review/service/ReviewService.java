@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Service
 public class ReviewService {
@@ -31,9 +33,41 @@ public class ReviewService {
             Files.createDirectories(imagePath.getParent());
             Files.write(imagePath, image.getBytes());
 
-            review.setImageUrl("/" + uploadDir + imageName);
+            review.setImageUrl("/" + uploadDir + "/" + imageName);
+        }
+
+        if (review.getCreatedDateTime() == null) {
+            review.setCreatedDateTime(LocalDateTime.now());
         }
 
         reviewRepository.save(review);
+    }
+
+    public void updateReview(Long id, String title, String content, MultipartFile image) throws IOException {
+        Optional<Review> optionalReview = reviewRepository.findById(id);
+        if (optionalReview.isPresent()) {
+            Review review = optionalReview.get();
+            review.setTitle(title);
+            review.setContent(content);
+
+            if (!image.isEmpty()) {
+                String imageName = image.getOriginalFilename();
+                Path imagePath = Paths.get(uploadDir, imageName);
+                Files.createDirectories(imagePath.getParent());
+                Files.write(imagePath, image.getBytes());
+
+                review.setImageUrl("/" + uploadDir + "/" + imageName);
+            }
+
+            reviewRepository.save(review);
+        }
+    }
+
+    public void deleteReview(Long id) {
+        reviewRepository.deleteById(id);
+    }
+
+    public Optional<Review> findById(Long id) {
+        return reviewRepository.findById(id);
     }
 }
