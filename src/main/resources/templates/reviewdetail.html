@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8" />
+  <title th:text="@{'리뷰 - ' + ${review.title}}"></title>
+  <link rel="stylesheet" href="/webjars/bootstrap/4.5.0/css/bootstrap.min.css" />
+</head>
+<body>
+<header th:insert="~{common/header.html}"></header>
+<div class="container">
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title" th:text="@{${review.title} + ' - ' + ${review.author}}"></h5>
+      <p class="card-text">
+        <small class="text-muted" th:text="${#temporals.format(review.createdDateTime, 'yyyy-MM-dd HH:mm')}"></small>
+      </p>
+      <p class="card-text" th:text="${review.content}"></p>
+      <img th:src="@{'/' + ${review.imageUrl}}" class="img-fluid" alt="이미지"/>
+    </div>
+  </div>
+
+  <!-- 대댓글 입력 폼 추가 -->
+  <div class="card mt-3">
+    <div class="card-body">
+      <form th:action="@{'/review/comment/' + ${review.id}}" method="post">
+        <div class="form-group">
+          <label for="commentContent">대댓글 작성</label>
+          <textarea class="form-control" id="commentContent" name="commentContent" rows="3"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">작성</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- 대댓글 목록 표시 -->
+  <div class="card mt-3">
+    <div class="card-body">
+      <h5 class="card-title">대댓글 목록</h5>
+      <ul class="list-group">
+        <!-- 대댓글 목록 출력 -->
+        <th:block th:each="comment : ${comments}">
+          <li class="list-group-item">
+            <span th:text="${comment.content}"></span>
+            <!-- 수정 버튼 -->
+            <a th:href="@{'/review/comment/edit/' + ${comment.id}}" class="btn btn-sm btn-primary ml-2">수정</a>
+            <!-- 삭제 버튼 -->
+            <form th:action="@{'/review/comment/delete/' + ${comment.id}}" method="post" class="d-inline">
+              <input type="hidden" name="_method" value="post" />
+              <button type="submit" class="btn btn-sm btn-danger ml-2">삭제</button>
+            </form>
+          </li>
+        </th:block>
+      </ul>
+    </div>
+  </div>
+
+  <div class="row mt-3">
+    <div class="col-auto mr-auto"></div>
+    <div class="col-auto">
+      <a class="btn btn-info" th:href="@{'/review/edit/' + ${review.id}}" role="button">수정</a>
+    </div>
+    <div class="col-auto">
+      <form id="delete-form" th:action="@{'/review/delete/' + ${review.id}}" method="post">
+        <input type="hidden" name="_method" value="delete" />
+        <button id="delete-btn" type="submit" class="btn btn-danger">삭제</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script src="/webjars/jquery/3.5.1/jquery.min.js"></script>
+<script src="/webjars/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</body>
+<footer th:insert="~{common/footer.html}"></footer>
+</html>

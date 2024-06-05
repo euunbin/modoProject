@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -55,7 +56,7 @@ public class ReviewController {
             model.addAttribute("review", review);
             return "editreview";
         }
-        return "reviewpost";
+        return "redirect:/review/list";
     }
 
     @PostMapping("/review/edit")
@@ -68,14 +69,30 @@ public class ReviewController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return "reviewpost";
+        return "redirect:/review/list";
     }
 
     @DeleteMapping("/review/delete/{id}") //reviewdatail 페이지 없음 그래서 아직 수정삭제 안됨
     public String deleteReview(@PathVariable("id") Long id) {
         reviewService.deleteReview(id);
-        return "redirect:/review/post";
+        return "redirect:/review/list";
+    }
+    @GetMapping("/review/list")
+    public String listReviews(Model model) {
+        List<Review> reviewList = reviewService.findAll();
+        model.addAttribute("reviewList", reviewList);
+        return "reviewlist";
     }
 
+    @GetMapping("/review/list/{id}")
+    public String reviewDetail(@PathVariable("id") Long id, Model model) {
+        Optional<Review> optionalReview = reviewService.findById(id);
+        if (optionalReview.isPresent()) {
+            Review review = optionalReview.get();
+            model.addAttribute("review", review);
+            return "reviewdetail";
+        }
+        return "redirect:/review/list";
+    }
 }
 

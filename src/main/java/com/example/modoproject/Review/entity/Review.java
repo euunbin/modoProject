@@ -1,6 +1,8 @@
 package com.example.modoproject.Review.entity;
 
 import jakarta.persistence.*;
+import org.jetbrains.annotations.NotNull;
+
 import java.time.LocalDateTime;
 
 @Entity
@@ -10,11 +12,22 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotNull
+    @Column(nullable = false)
     private String title;
+
+    @NotNull
+    @Column(nullable = false)
     private String author;
+
+    @NotNull
+    @Column(nullable = false)
     private String content;
+
     private String imageUrl;
 
+    @NotNull
+    @Column(nullable = false)
     private LocalDateTime createdDateTime;
 
     // Getters and Setters
