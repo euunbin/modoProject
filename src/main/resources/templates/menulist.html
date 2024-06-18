@@ -14,6 +14,7 @@
         <th>Name</th>
         <th>Price</th>
         <th>Image</th>
+        <th>Action</th>
     </tr>
     </thead>
     <tbody>
@@ -23,6 +24,17 @@
         <td><a th:href="@{/menus/{merchanUid}/{menuName}/{price}(merchanUid=${menu.merchanUid}, menuName=${menu.name}, price=${menu.price})}" th:text="${menu.name}"></a></td>
         <td th:text="${menu.price} + '원'"></td>
         <td><img th:src="${menu.imageUrl}" width="100" height="100" alt="Menu Image"></td>
+        <td>
+            <form th:action="@{/cart/add}" method="post">
+                <input type="hidden" name="merchanUid" th:value="${menu.merchanUid}">
+                <input type="hidden" name="companyId" th:value="${menu.companyId}">
+                <input type="hidden" name="name" th:value="${menu.name}">
+                <input type="hidden" name="price" th:value="${menu.price}">
+                <input type="hidden" name="imageUrl" th:value="${menu.imageUrl}">
+                <input type="number" name="count" value="1" min="1" style="width: 50px;">
+                <button type="submit">장바구니 담기</button>
+            </form>
+        </td>
     </tr>
     </tbody>
 </table>
