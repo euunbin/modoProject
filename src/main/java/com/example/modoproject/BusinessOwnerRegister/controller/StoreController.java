@@ -11,6 +11,7 @@ import java.util.List;
 
 @Controller
 public class StoreController {
+
     @Autowired
     private StoreService storeService;
 
@@ -49,4 +50,18 @@ public class StoreController {
         storeService.updateStore(companyId, store);
         return "redirect:/stores";
     }
+
+    @PostMapping("/favorite/toggle/{companyId}")
+    public String toggleFavorite(@PathVariable String companyId) {
+        storeService.toggleFavorite(companyId);
+        return "redirect:/favoriteStores";
+    }
+
+    @GetMapping("/favoriteStores")
+    public String listFavoriteStores(Model model) {
+        List<Store> favoriteStores = storeService.findFavoriteStores();
+        model.addAttribute("stores", favoriteStores);
+        return "favoriteStores";
+    }
 }
+
