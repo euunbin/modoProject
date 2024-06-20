@@ -18,7 +18,6 @@ public class Store{
     private String description;
     private LocalDateTime registrationDate;
     private String companyId; //업체ID, 가맹점 식별 코드
-    private boolean favorite;
 
     public String getCompanyId() {
         return companyId;
@@ -93,8 +92,5 @@ public class Store{
         this.registrationDate = registrationDate;
     }
 
-    public boolean isFavorite() { return favorite; }
-
-    public void setFavorite(boolean favorite) { this.favorite = favorite; }
 }
 

@@ -2,6 +2,8 @@ package com.example.modoproject.BusinessOwnerRegister.Service;
 
 import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRepository;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
+import com.example.modoproject.Favorites.entity.Favorites;
+import com.example.modoproject.Favorites.repository.FavoritesRepository;
 import com.example.modoproject.login.entity.User;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +19,7 @@ public class StoreService {
     private StoreRepository storeRepository;
 
     @Autowired
-    private HttpSession httpSession;
+    private FavoritesRepository favoritesRepository;
 
     public Store registerStore(Store store) {
         store.setRegistrationDate(LocalDateTime.now());
@@ -41,23 +43,7 @@ public class StoreService {
         }
     }
 
-    public List<Store> findAllStores() {
+    public List<Store> getAllStores() {
         return storeRepository.findAll();
-    }
-
-    public List<Store> findFavoriteStores() {
-        return storeRepository.findByFavoriteTrue();
-    }
-
-    public void toggleFavorite(String companyId) {
-        User user = (User) httpSession.getAttribute("user");
-        if (user != null) {
-            Store store = storeRepository.findByCompanyId(companyId);
-            if (store != null) {
-                boolean currentFavorite = store.isFavorite();
-                store.setFavorite(!currentFavorite);
-                storeRepository.save(store); // 즐겨찾기 상태 저장
-            }
-        }
     }
 }

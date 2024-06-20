@@ -1,6 +1,9 @@
 package com.example.modoproject.login.entity;
 
+import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import jakarta.persistence.*;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")

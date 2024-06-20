@@ -36,7 +36,8 @@
     <th>본문</th>
     <th>등록일자</th>
     <th>가게 이미지</th>
-    <th>즐겨찾기</th>
+    <th>좋아요</th> <!-- 좋아요 버튼 추가 -->
+
   </tr>
   </thead>
   <tbody>
@@ -50,10 +51,10 @@
     <td th:text="${store.registrationDate}">등록일자</td>
     <td><img th:src="${store.imageUrl}" alt="가게 이미지"/></td>
     <td>
-      <form th:action="@{/favorite/toggle/{companyId}(companyId=${store.companyId})}" method="post">
-        <button type="submit" class="favorite-button">
-          <span th:classappend="${store.favorite} ? 'star-icon favorited' : 'star-icon'">★</span>
-        </button>
+      <form th:action="@{/favorites}" method="post">
+        <input type="hidden" name="externalId" value="12345" /> <!-- 로그인 사용자의 externalId를 여기에 설정 -->
+        <input type="hidden" name="companyId" th:value="${store.companyId}" /> <!-- 가게의 companyId를 hidden으로 전송 -->
+        <button type="submit">좋아요</button>
       </form>
     </td>
   </tr>
