@@ -1,12 +1,17 @@
 package com.example.modoproject.Favorites.controller;
 
+import com.example.modoproject.BusinessOwnerRegister.Service.StoreService;
+import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.Favorites.entity.Favorites;
 import com.example.modoproject.Favorites.service.FavoritesService;
+import com.example.modoproject.login.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import jakarta.servlet.http.HttpSession;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/favorites")
@@ -15,14 +20,37 @@ public class FavoritesController {
     @Autowired
     private FavoritesService favoritesService;
 
+    @Autowired
+    private StoreService storeService;
+
+    @Autowired
+    private HttpSession session;
+
     @PostMapping
-    public ResponseEntity<Favorites> addFavorite(@RequestParam String externalId, @RequestParam String companyId) {
-        Favorites favorite = favoritesService.addFavorite(externalId, companyId);
-        return ResponseEntity.ok(favorite);
+    public ResponseEntity<Favorites> toggleFavorite(@RequestParam String companyId) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).build();
+        }
+        String externalId = user.getExternalId();
+
+        Favorites existingFavorite = favoritesService.getFavoriteByExternalIdAndCompanyId(externalId, companyId);
+        if (existingFavorite != null) {
+            favoritesService.removeFavorite(externalId, companyId);
+            return ResponseEntity.noContent().build();
+        } else {
+            Favorites favorite = favoritesService.addFavorite(externalId, companyId);
+            return ResponseEntity.ok(favorite);
+        }
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> removeFavorite(@RequestParam String externalId, @RequestParam String companyId) {
+    public ResponseEntity<Void> removeFavorite(@RequestParam String companyId) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).build();
+        }
+        String externalId = user.getExternalId();
         favoritesService.removeFavorite(externalId, companyId);
         return ResponseEntity.noContent().build();
     }
@@ -43,5 +71,20 @@ public class FavoritesController {
     public ResponseEntity<Favorites> getFavoriteByExternalIdAndCompanyId(@RequestParam String externalId, @RequestParam String companyId) {
         Favorites favorite = favoritesService.getFavoriteByExternalIdAndCompanyId(externalId, companyId);
         return ResponseEntity.ok(favorite);
+    }
+
+    @GetMapping("/favoriteStores")
+    public ResponseEntity<List<Store>> getFavoriteStores(HttpSession session) {
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            return ResponseEntity.status(401).build(); // 사용자 인증이 필요한 경우
+        }
+        String externalId = user.getExternalId();
+        List<Favorites> favorites = favoritesService.getFavoritesByUser(externalId);
+        List<String> companyIds = favorites.stream()
+                .map(Favorites::getCompanyId)
+                .collect(Collectors.toList());
+        List<Store> stores = storeService.getStoresByCompanyIds(companyIds);
+        return ResponseEntity.ok(stores);
     }
 }

@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface StoreRepository extends JpaRepository<Store, Long> {
     Store findByCompanyId(String companyId);
+
+    List<Store> findByCompanyIdIn(List<String> companyIds);
 }

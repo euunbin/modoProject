@@ -2,10 +2,7 @@ package com.example.modoproject.BusinessOwnerRegister.Service;
 
 import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRepository;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
-import com.example.modoproject.Favorites.entity.Favorites;
 import com.example.modoproject.Favorites.repository.FavoritesRepository;
-import com.example.modoproject.login.entity.User;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,5 +42,9 @@ public class StoreService {
 
     public List<Store> getAllStores() {
         return storeRepository.findAll();
+    }
+
+    public List<Store> getStoresByCompanyIds(List<String> companyIds) {
+        return storeRepository.findByCompanyIdIn(companyIds);
     }
 }

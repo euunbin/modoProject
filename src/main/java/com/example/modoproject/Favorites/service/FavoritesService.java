@@ -2,6 +2,7 @@ package com.example.modoproject.Favorites.service;
 
 import com.example.modoproject.Favorites.entity.Favorites;
 import com.example.modoproject.Favorites.repository.FavoritesRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,13 +14,18 @@ public class FavoritesService {
     @Autowired
     private FavoritesRepository favoritesRepository;
 
+    @Transactional
     public Favorites addFavorite(String externalId, String companyId) {
         Favorites favorite = new Favorites(externalId, companyId);
         return favoritesRepository.save(favorite);
     }
 
+    @Transactional
     public void removeFavorite(String externalId, String companyId) {
-        favoritesRepository.deleteByExternalIdAndCompanyId(externalId, companyId);
+        Favorites favorite = favoritesRepository.findByExternalIdAndCompanyId(externalId, companyId);
+        if (favorite != null) {
+            favoritesRepository.delete(favorite);
+        }
     }
 
     public List<Favorites> getFavoritesByUser(String externalId) {
