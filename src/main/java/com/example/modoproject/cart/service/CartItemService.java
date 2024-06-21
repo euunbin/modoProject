@@ -8,16 +8,15 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
-
 @Service
 public class CartItemService {
     @Autowired
     private CartItemRepository cartItemRepository;
 
-    public CartItenEntity addToCart(String merchanUid, Long companyId, String name, int price, int count, String imageUrl) {
+    // 장바구니에 항목 추가
+    public CartItenEntity addToCart(String merchanUid, Long companyId, String name, int price, int count, String imageUrl, String externalId) {
         // 같은 메뉴가 이미 장바구니에 있는지 확인
-        CartItenEntity existingCartItem = cartItemRepository.findByMerchanUidAndCompanyId(merchanUid, companyId);
+        CartItenEntity existingCartItem = cartItemRepository.findByMerchanUidAndCompanyIdAndExternalId(merchanUid, companyId, externalId);
         if (existingCartItem != null) {
             // 이미 있으면 수량만 증가
             existingCartItem.setCount(existingCartItem.getCount() + count);
@@ -33,14 +32,17 @@ public class CartItemService {
             cartItem.setCount(count);
             cartItem.setImageUrl(imageUrl);
             cartItem.setMoneyTotal(price * count);
+            cartItem.setExternalId(externalId);
             return cartItemRepository.save(cartItem);
         }
     }
 
-    public List<CartItenEntity> getCartItems() {
-        return cartItemRepository.findAll();
+    // 특정 사용자의 장바구니 항목 목록 조회
+    public List<CartItenEntity> getCartItemsByExternalId(String externalId) {
+        return cartItemRepository.findByExternalId(externalId);
     }
 
+    // 장바구니에서 항목 삭제
     public void removeFromCart(Long id) {
         cartItemRepository.deleteById(id);
     }

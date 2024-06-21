@@ -1,7 +1,5 @@
 package com.example.modoproject.cart.entity;
 
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,6 +17,7 @@ public class CartItenEntity {
     private int moneyTotal;
     private String imageUrl;
     private int count;
+    private String externalId; // 사용자 externalId 추가
 
     // Getters and setters
     public Long getId() {
@@ -83,5 +82,13 @@ public class CartItenEntity {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
     }
 }
