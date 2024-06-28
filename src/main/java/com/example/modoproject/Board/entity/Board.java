@@ -23,7 +23,7 @@ public class Board {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 100, nullable = false)
     private String author;
 
     @Column(length = 100, nullable = false)
@@ -42,7 +42,7 @@ public class Board {
     @LastModifiedDate
     private LocalDateTime modifiedDate;
 
-    @Column(length = 10, nullable = false)
+    @Column(length = 100, nullable = false)
     private String category;
 
     @Column(length = 10, nullable = true)

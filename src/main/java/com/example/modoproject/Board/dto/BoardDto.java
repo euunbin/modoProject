@@ -22,44 +22,41 @@ public class BoardDto {
     private MultipartFile image;
     private String type;
     private byte[] imageData; // 이미지 데이터 필드 추가
-    public static BoardDto from(Board board) {
-        return BoardDto.builder()
-                .id(board.getId())
-                .author(board.getAuthor())
-                .title(board.getTitle())
-                .content(board.getContent())
-                .imagePath(board.getImagePath())
-                .category(board.getCategory())
-                .createdDate(board.getCreatedDate())
-                .modifiedDate(board.getModifiedDate())
-                .type(board.getType())
-                .build();
-    }
-
-    public Board toEntity() {
-        return Board.builder()
-                .id(id)
-                .author(author)
-                .title(title)
-                .content(content)
-                .imagePath(imagePath) // Board 엔티티에 이미지 경로 설정
-                .category(category)
-                .type(type)
-                .build();
-    }
-
     @Builder
-    public BoardDto(Long id, String author, String title, String content, String imagePath, String category, LocalDateTime createdDate, LocalDateTime modifiedDate, String type) {
+    public BoardDto(Long id, String author, String title, String content, String imagePath, String category, String type, LocalDateTime createdDate) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.content = content;
         this.imagePath = imagePath;
         this.category = category;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
         this.type = type;
+        this.createdDate = createdDate;
+    }
 
+    public Board toEntity() {
+        return Board.builder()
+                .id(id)
+                .author(author) // 필수 필드 설정
+                .title(title)
+                .content(content)
+                .imagePath(imagePath)
+                .category(category) // 필수 필드 설정
+                .type(type)
+                .build();
+    }
+
+    public static BoardDto from(Board board) {
+        return BoardDto.builder()
+                .id(board.getId())
+                .author(board.getAuthor()) // 필수 필드 설정
+                .title(board.getTitle())
+                .content(board.getContent())
+                .imagePath(board.getImagePath())
+                .category(board.getCategory()) // 필수 필드 설정
+                .type(board.getType())
+                .createdDate(board.getCreatedDate())
+                .build();
     }
 
     // 이미지 데이터를 저장하는 setter
