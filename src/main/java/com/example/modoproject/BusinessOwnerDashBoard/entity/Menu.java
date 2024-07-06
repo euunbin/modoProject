@@ -14,11 +14,11 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Long companyId; //업체ID, 가맹점 식별 코드
-    private String name;
-    private int price;
-    private Date createdAt;
-    private String imageUrl;
-    private String merchanUid; // 새로운 필드 추가
+    private String name; //메뉴 이름
+    private int price; //메뉴 가격
+    private Date createdAt; //메뉴 생성 날짜
+    private String imageUrl; //이미지 주소 경로
+    private String merchanUid; // 상품 랜덤 값
 
     public String getMerchanUid() {
         return merchanUid;

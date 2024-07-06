@@ -75,4 +75,8 @@ public class MenuService {
         // 저장된 이미지의 URL을 반환합니다.
         return "/menuimage/" + filename; // 정적 리소스 URL을 생성합니다.
     }
+
+    public List<Menu> getMenuByStoreId(Long companyId) {
+        return menuRepository.findByCompanyId(companyId);
+    }
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class StoreService {
@@ -46,5 +47,9 @@ public class StoreService {
 
     public List<Store> getStoresByCompanyIds(List<String> companyIds) {
         return storeRepository.findByCompanyIdIn(companyIds);
+    }
+
+    public Optional<Store> findById(Long id) {
+        return storeRepository.findById(id);
     }
 }

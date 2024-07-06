@@ -10,13 +10,13 @@ public class Store{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private String foodType;
-    private String address;
-    private String imageUrl;
-    private String phoneNumber;
-    private String description;
-    private LocalDateTime registrationDate;
+    private String name; //업체명
+    private String foodType; //음식 종류 예시 = 한식, 중식, 양식
+    private String address; //주소지
+    private String imageUrl; //이미지 저장 주소 경로
+    private String phoneNumber; //가게 전화번호
+    private String description; //설명
+    private LocalDateTime registrationDate; //가입 날짜
     private String companyId; //업체ID, 가맹점 식별 코드
 
     public String getCompanyId() {
