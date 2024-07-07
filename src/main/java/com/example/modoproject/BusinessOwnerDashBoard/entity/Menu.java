@@ -13,7 +13,7 @@ public class Menu {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long companyId; //업체ID, 가맹점 식별 코드
+    private String companyId; //업체ID, 가맹점 식별 코드
     private String name; //메뉴 이름
     private int price; //메뉴 가격
     private Date createdAt; //메뉴 생성 날짜
@@ -36,11 +36,11 @@ public class Menu {
         this.id = id;
     }
 
-    public Long getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Long companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 

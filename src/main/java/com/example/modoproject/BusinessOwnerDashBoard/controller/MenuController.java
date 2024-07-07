@@ -33,7 +33,7 @@ public class MenuController {
     }
 
     @PostMapping("/add") // "/menus/add" 경로에 대한 POST 요청을 처리합니다.
-    public String addMenu(@RequestParam("companyId") Long companyId,
+    public String addMenu(@RequestParam("companyId") String companyId,
                           @RequestParam("names") String[] names,
                           @RequestParam("prices") String[] prices,
                           @RequestParam("images") MultipartFile[] images,
@@ -46,7 +46,7 @@ public class MenuController {
     }
 
     @PostMapping("/addAll") // "/menus/addAll" 경로에 대한 POST 요청을 처리합니다.
-    public String addAllMenus(@RequestParam("companyId") Long companyId,
+    public String addAllMenus(@RequestParam("companyId") String companyId,
                               @RequestParam("names") String[] names,
                               @RequestParam("prices") String[] prices,
                               @RequestParam("images") MultipartFile[] images) throws IOException {
