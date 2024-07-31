@@ -22,9 +22,8 @@ public class ReviewService {
 
     private final String uploadDir = "src/main/resources/static/review";
 
-    public void saveReview(String title, String author, String content, MultipartFile image) throws IOException {
+    public void saveReview(String author, String content, MultipartFile image) throws IOException {
         Review review = new Review();
-        review.setTitle(title);
         review.setAuthor(author);
         review.setContent(content);
 
@@ -44,11 +43,10 @@ public class ReviewService {
         reviewRepository.save(review);
     }
 
-    public void updateReview(Long id, String title, String content, MultipartFile image) throws IOException {
+    public void updateReview(Long id, String content, MultipartFile image) throws IOException {
         Optional<Review> optionalReview = reviewRepository.findById(id);
         if (optionalReview.isPresent()) {
             Review review = optionalReview.get();
-            review.setTitle(title);
             review.setContent(content);
 
             if (!image.isEmpty()) {

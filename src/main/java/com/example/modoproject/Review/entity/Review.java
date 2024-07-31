@@ -14,10 +14,6 @@ public class Review {
 
     @NotNull
     @Column(nullable = false)
-    private String title;
-
-    @NotNull
-    @Column(nullable = false)
     private String author;
 
     @NotNull
@@ -37,14 +33,6 @@ public class Review {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public String getAuthor() {

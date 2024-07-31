@@ -34,7 +34,7 @@ public class ReviewController {
     }
 
     @PostMapping("/review/post")
-    public String postReview(@RequestParam("title") String title,
+    public String postReview(
                              @RequestParam("content") String content,
                              @RequestParam("image") MultipartFile image) {
         HttpSession session = httpServletRequest.getSession();
@@ -42,7 +42,7 @@ public class ReviewController {
         String author = user != null ? user.getNickname() : "비회원";
 
         try {
-            reviewService.saveReview(title, author, content, image);
+            reviewService.saveReview(author, content, image);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -61,11 +61,10 @@ public class ReviewController {
 
     @PostMapping("/review/edit")
     public String updateReview(@RequestParam("id") Long id,
-                               @RequestParam("title") String title,
                                @RequestParam("content") String content,
                                @RequestParam("image") MultipartFile image) {
         try {
-            reviewService.updateReview(id, title, content, image);
+            reviewService.updateReview(id, content, image);
         } catch (IOException e) {
             e.printStackTrace();
         }
