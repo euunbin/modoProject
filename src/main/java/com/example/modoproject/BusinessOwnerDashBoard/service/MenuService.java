@@ -24,7 +24,7 @@ public class MenuService {
         return menuRepository.findAll();
     }
 
-    public Menu saveMenu(Long companyId, String name, int price, MultipartFile image) throws IOException {
+    public Menu saveMenu(String companyId, String name, int price, MultipartFile image) throws IOException {
         Menu menu = new Menu();
         menu.setCompanyId(companyId);
         menu.setName(name);
@@ -75,7 +75,7 @@ public class MenuService {
         return "/menuimage/" + filename; // 정적 리소스 URL을 생성합니다.
     }
 
-    public List<Menu> getMenuByStoreId(Long companyId) {
+    public List<Menu> getMenuByStoreId(String companyId) {
         return menuRepository.findByCompanyId(companyId);
     }
 

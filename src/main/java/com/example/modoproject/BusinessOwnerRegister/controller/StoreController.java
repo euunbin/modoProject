@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Controller
-@RequestMapping("/api/stores") // API 엔드포인트를 명확히 하기 위해 추가
 public class StoreController {
 
     @Autowired
@@ -25,6 +24,7 @@ public class StoreController {
     @Autowired
     private MenuRepository menuRepository;
 
+    // 뷰 관련 메서드
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
         model.addAttribute("store", new Store());
@@ -62,23 +62,31 @@ public class StoreController {
         return "redirect:/stores";
     }
 
-    // REST API 메서드 추가
-    @GetMapping
-    @ResponseBody
-    public List<Store> getAllStores() {
-        return storeService.getAllStores();
-    }
+    // REST API 메서드
+    @RestController
+    @RequestMapping("/api/stores")
+    public static class StoreApiController {
 
-    @GetMapping("/{id}")
-    @ResponseBody
-    public ResponseEntity<Store> getStoreById(@PathVariable Long id) {
-        Optional<Store> store = storeService.findById(id);
-        return store.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-    }
+        @Autowired
+        private StoreService storeService;
 
-    @GetMapping("/{id}/menu")
-    @ResponseBody
-    public List<Menu> getMenuByStoreId(@PathVariable Long id) {
-        return menuRepository.findByCompanyId(id);
+        @Autowired
+        private MenuRepository menuRepository;
+
+        @GetMapping
+        public List<Store> getAllStores() {
+            return storeService.getAllStores();
+        }
+
+        @GetMapping("/{id}")
+        public ResponseEntity<Store> getStoreById(@PathVariable Long id) {
+            Optional<Store> store = storeService.findById(id);
+            return store.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+        }
+
+        @GetMapping("/{companyId}/menu")
+        public List<Menu> getMenuByStoreCompanyId(@PathVariable String companyId) {
+            return menuRepository.findByCompanyId(companyId);
+        }
     }
 }
