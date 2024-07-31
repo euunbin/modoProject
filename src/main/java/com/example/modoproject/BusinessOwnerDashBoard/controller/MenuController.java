@@ -25,7 +25,7 @@ public class MenuController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Menu> addMenu(@RequestParam("companyId") Long companyId,
+    public ResponseEntity<Menu> addMenu(@RequestParam("companyId") String companyId,
                                         @RequestParam("name") String name,
                                         @RequestParam("price") int price,
                                         @RequestParam("image") MultipartFile image) throws IOException {
@@ -41,7 +41,7 @@ public class MenuController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Menu> updateMenu(@PathVariable Long id,
-                                           @RequestParam("companyId") Long companyId,
+                                           @RequestParam("companyId") String companyId,
                                            @RequestParam("name") String name,
                                            @RequestParam("price") int price,
                                            @RequestParam(value = "image", required = false) MultipartFile image) throws IOException {
@@ -50,7 +50,7 @@ public class MenuController {
     }
 
     @PostMapping("/addAll")
-    public ResponseEntity<Void> addAllMenus(@RequestParam("companyId") Long companyId,
+    public ResponseEntity<Void> addAllMenus(@RequestParam("companyId") String companyId,
                                             @RequestParam("names") String[] names,
                                             @RequestParam("prices") String[] prices,
                                             @RequestParam("images") MultipartFile[] images) throws IOException {
