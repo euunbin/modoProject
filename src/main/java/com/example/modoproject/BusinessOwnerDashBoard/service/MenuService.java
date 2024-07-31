@@ -3,7 +3,6 @@ package com.example.modoproject.BusinessOwnerDashBoard.service;
 import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
 import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +12,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -51,7 +51,6 @@ public class MenuService {
         return sb.toString();
     }
 
-
     // 이미지를 저장하는 메서드
     private String saveImage(MultipartFile image) throws IOException {
         if (image.isEmpty()) {
@@ -78,5 +77,27 @@ public class MenuService {
 
     public List<Menu> getMenuByStoreId(Long companyId) {
         return menuRepository.findByCompanyId(companyId);
+    }
+
+    public void deleteMenu(Long id) {
+        menuRepository.deleteById(id);
+    }
+
+    public Menu updateMenu(Long id, Long companyId, String name, int price, MultipartFile image) throws IOException {
+        Optional<Menu> optionalMenu = menuRepository.findById(id);
+        if (!optionalMenu.isPresent()) {
+            throw new IllegalArgumentException("Invalid menu ID");
+        }
+        Menu menu = optionalMenu.get();
+        menu.setCompanyId(companyId);
+        menu.setName(name);
+        menu.setPrice(price);
+
+        if (image != null && !image.isEmpty()) {
+            String imageUrl = saveImage(image);
+            menu.setImageUrl(imageUrl);
+        }
+
+        return menuRepository.save(menu);
     }
 }
