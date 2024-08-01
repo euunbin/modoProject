@@ -1,5 +1,7 @@
 package com.example.modoproject.BusinessOwnerDashBoard.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,9 @@ public class MenuController {
     @Autowired
     private MenuService menuService;
 
+    @Autowired
+    private HttpServletRequest httpServletRequest;
+
     @GetMapping("/list")
     public ResponseEntity<List<Menu>> showMenuList() {
         List<Menu> menuList = menuService.getAllMenus();
@@ -29,6 +34,9 @@ public class MenuController {
                                         @RequestParam("name") String name,
                                         @RequestParam("price") int price,
                                         @RequestParam("image") MultipartFile image) throws IOException {
+        HttpSession session = httpServletRequest.getSession();
+        session.setAttribute("companyId", companyId);
+
         Menu menu = menuService.saveMenu(companyId, name, price, image);
         return ResponseEntity.ok(menu);
     }

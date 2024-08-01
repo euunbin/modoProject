@@ -30,6 +30,7 @@ public class PaymentsController {
     public String paymentCallback(@RequestBody Payment payment) {
         HttpSession session = httpServletRequest.getSession();
         String externalId = (String) session.getAttribute("externalId");
+        String companyId = (String) session.getAttribute("companyId");
         payment.setExternalId(externalId);
 
         paymentService.savePayment(payment);

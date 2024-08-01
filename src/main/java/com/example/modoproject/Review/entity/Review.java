@@ -20,6 +20,7 @@ public class Review {
     @Column(nullable = false)
     private String content;
     private String externalId;
+    private String merchantUid;
 
     private String imageUrl;
 
@@ -28,6 +29,7 @@ public class Review {
     private LocalDateTime createdDateTime;
 
     // Getters and Setters
+
     public Long getId() {
         return id;
     }
@@ -68,9 +70,22 @@ public class Review {
         this.createdDateTime = createdDateTime;
     }
 
-    public String getExternalId() { return externalId; }
+    public String getExternalId() {
+        return externalId;
+    }
 
-    public void setExternalId(String externalId) { this.externalId = externalId; }
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+
+    public String getMerchantUid() {
+        return merchantUid;
+    }
+
+    public void setMerchantUid(String merchantUid) {
+        this.merchantUid = merchantUid;
+    }
+
     @PrePersist
     protected void onCreate() {
         if (this.createdDateTime == null) {

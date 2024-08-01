@@ -35,21 +35,22 @@ public class ReviewController {
 
     @PostMapping("/review/post")
     public String postReview(
-                             @RequestParam("content") String content,
-                             @RequestParam("image") MultipartFile image) {
+            @RequestParam("content") String content,
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("merchantUid") String merchantUid) {
         HttpSession session = httpServletRequest.getSession();
         User user = (User) session.getAttribute("user");
         String author = user != null ? user.getNickname() : "비회원";
         String externalId = user != null ? user.getExternalId() : "anonymous";
 
-
         try {
-            reviewService.saveReview(author, content, image, externalId);
+            reviewService.saveReview(author, content, image, externalId, merchantUid);
         } catch (IOException e) {
             e.printStackTrace();
         }
         return "redirect:/review/post";
     }
+
     @GetMapping("/review/edit/{id}")
     public String editReview(@PathVariable("id") Long id, Model model) {
         Optional<Review> optionalReview = reviewService.findById(id);
@@ -73,11 +74,12 @@ public class ReviewController {
         return "redirect:/review/list";
     }
 
-    @DeleteMapping("/review/delete/{id}") //reviewdatail 페이지 없음 그래서 아직 수정삭제 안됨
+    @DeleteMapping("/review/delete/{id}")
     public String deleteReview(@PathVariable("id") Long id) {
         reviewService.deleteReview(id);
         return "redirect:/review/list";
     }
+
     @GetMapping("/review/list")
     public String listReviews(Model model) {
         List<Review> reviewList = reviewService.findAll();
@@ -96,4 +98,3 @@ public class ReviewController {
         return "redirect:/review/list";
     }
 }
-
