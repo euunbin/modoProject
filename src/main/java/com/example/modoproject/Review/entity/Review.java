@@ -19,6 +19,7 @@ public class Review {
     @NotNull
     @Column(nullable = false)
     private String content;
+    private String externalId;
 
     private String imageUrl;
 
@@ -67,6 +68,9 @@ public class Review {
         this.createdDateTime = createdDateTime;
     }
 
+    public String getExternalId() { return externalId; }
+
+    public void setExternalId(String externalId) { this.externalId = externalId; }
     @PrePersist
     protected void onCreate() {
         if (this.createdDateTime == null) {

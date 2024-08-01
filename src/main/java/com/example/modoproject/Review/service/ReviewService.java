@@ -22,10 +22,11 @@ public class ReviewService {
 
     private final String uploadDir = "src/main/resources/static/review";
 
-    public void saveReview(String author, String content, MultipartFile image) throws IOException {
+    public void saveReview(String author, String content, MultipartFile image, String externalId) throws IOException {
         Review review = new Review();
         review.setAuthor(author);
         review.setContent(content);
+        review.setExternalId(externalId);
 
         if (!image.isEmpty()) {
             String imageName = image.getOriginalFilename();

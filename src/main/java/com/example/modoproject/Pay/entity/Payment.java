@@ -21,6 +21,8 @@ public class Payment {
     private String buyerName;
     private String buyerTel;
     private String buyerAddr;
+    private String externalId;
+
 
     public Long getId() {
         return id;
@@ -101,4 +103,8 @@ public class Payment {
     public void setBuyerAddr(String buyerAddr) {
         this.buyerAddr = buyerAddr;
     }
+
+    public String getExternalId() { return externalId; }
+
+    public void setExternalId(String externalId) { this.externalId = externalId; }
 }

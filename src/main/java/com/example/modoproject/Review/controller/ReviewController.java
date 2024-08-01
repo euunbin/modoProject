@@ -40,9 +40,11 @@ public class ReviewController {
         HttpSession session = httpServletRequest.getSession();
         User user = (User) session.getAttribute("user");
         String author = user != null ? user.getNickname() : "비회원";
+        String externalId = user != null ? user.getExternalId() : "anonymous";
+
 
         try {
-            reviewService.saveReview(author, content, image);
+            reviewService.saveReview(author, content, image, externalId);
         } catch (IOException e) {
             e.printStackTrace();
         }
