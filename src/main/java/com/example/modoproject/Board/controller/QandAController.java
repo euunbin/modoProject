@@ -37,7 +37,7 @@ public class QandAController {
     }
 
     @PostMapping
-    public ResponseEntity<BoardDto> write(@RequestPart("board") BoardDto boardDto, @RequestPart("image") MultipartFile image) {
+    public ResponseEntity<BoardDto> write(@RequestPart("board") BoardDto boardDto, @RequestPart(value = "image", required = false) MultipartFile image) {
         try {
             if (image != null && !image.isEmpty()) {
                 boardDto.setImagePath(saveImage(image));

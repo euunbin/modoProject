@@ -5,6 +5,9 @@ import com.example.modoproject.Pay.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+
 @Service
 public class PaymentService {
 
@@ -13,5 +16,9 @@ public class PaymentService {
 
     public Payment savePayment(Payment payment) {
         return paymentRepository.save(payment);
+    }
+
+    public List<Payment> getAllPayments() {
+        return paymentRepository.findAll();
     }
 }
