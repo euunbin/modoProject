@@ -102,20 +102,6 @@ public class StoreController {
             return ResponseEntity.ok(savedStore);
         }
 
-        @PutMapping("/{companyId}")
-        public ResponseEntity<Store> updateStore(@PathVariable String companyId, @RequestBody Store store) {
-            try {
-                Store updatedStore = storeService.updateStore(companyId, store);
-                if (updatedStore == null) {
-                    return ResponseEntity.notFound().build();
-                }
-                return ResponseEntity.ok(updatedStore);
-            } catch (IllegalArgumentException e) {
-                return ResponseEntity.badRequest().body(null);
-            }
-        }
-
-
         @GetMapping("/by-external-id")
         public ResponseEntity<Store> getStoreByExternalId() {
             String externalId = (String) session.getAttribute("externalId");
@@ -177,5 +163,29 @@ public class StoreController {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
         }
+
+        @PutMapping("/{companyId}")
+        public ResponseEntity<Store> updateStore(@PathVariable String companyId, @RequestBody Store store) {
+            try {
+                Store updatedStore = storeService.updateStore(companyId, store);
+                if (updatedStore == null) {
+                    return ResponseEntity.notFound().build();
+                }
+                return ResponseEntity.ok(updatedStore);
+            } catch (IllegalArgumentException e) {
+                return ResponseEntity.badRequest().body(null);
+            }
+        }
+
+        @DeleteMapping("/{companyId}")
+        public ResponseEntity<Void> deleteStore(@PathVariable String companyId) {
+            boolean isDeleted = storeService.deleteStore(companyId);
+            if (isDeleted) {
+                return ResponseEntity.noContent().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        }
+
     }
 }

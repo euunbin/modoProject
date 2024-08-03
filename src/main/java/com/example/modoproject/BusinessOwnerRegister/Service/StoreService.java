@@ -77,4 +77,14 @@ public class StoreService {
     public Store getStoreByExternalId(String externalId) {
         return storeRepository.findByExternalId(externalId);
     }
+
+    public boolean deleteStore(String companyId) {
+        Store store = storeRepository.findByCompanyId(companyId);
+        if (store != null) {
+            storeRepository.delete(store);
+            return true;
+        }
+        return false;
+    }
+
 }
