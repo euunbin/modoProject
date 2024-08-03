@@ -76,6 +76,7 @@ public class StoreService {
             store.setPhoneNumber(storeRequest.getPhoneNumber());
             store.setDescription(storeRequest.getDescription());
             store.setCompanyId(storeRequest.getCompanyId());
+            store.setExternalId(storeRequest.getExternalId()); // externalId 설정
             store.setRegistrationDate(LocalDateTime.now());
             storeRepository.save(store);
             storeRequestRepository.delete(storeRequest);
