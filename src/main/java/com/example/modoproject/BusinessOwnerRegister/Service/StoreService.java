@@ -1,7 +1,9 @@
 package com.example.modoproject.BusinessOwnerRegister.Service;
 
 import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRepository;
+import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRequestRepository;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
+import com.example.modoproject.BusinessOwnerRegister.entity.StoreRequest;
 import com.example.modoproject.Favorites.repository.FavoritesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class StoreService {
     private StoreRepository storeRepository;
 
     @Autowired
+    private StoreRequestRepository storeRequestRepository;
+
+    @Autowired
     private FavoritesRepository favoritesRepository;
 
     public Store registerStore(Store store) {
@@ -28,26 +33,14 @@ public class StoreService {
         return storeRepository.findByCompanyId(companyId);
     }
 
-    public Store updateStore(String oldCompanyId, Store updatedStore) {
-        Store existingStore = storeRepository.findByCompanyId(oldCompanyId);
-        if (existingStore != null) {
-            // 업데이트할 필드 설정
-            existingStore.setName(updatedStore.getName());
-            existingStore.setAddress(updatedStore.getAddress());
-            existingStore.setPhoneNumber(updatedStore.getPhoneNumber());
-            existingStore.setFoodType(updatedStore.getFoodType());
-            existingStore.setImageUrl(updatedStore.getImageUrl());
-            existingStore.setDescription(updatedStore.getDescription());
-
-            if (updatedStore.getCompanyId() != null && !updatedStore.getCompanyId().equals(oldCompanyId)) {
-                Store existingStoreWithNewCompanyId = storeRepository.findByCompanyId(updatedStore.getCompanyId());
-                if (existingStoreWithNewCompanyId != null) {
-                    throw new IllegalArgumentException("새로운 companyId가 이미 사용 중입니다.");
-                }
-                existingStore.setCompanyId(updatedStore.getCompanyId());
-            }
-
-            return storeRepository.save(existingStore);
+    public Store updateStore(String companyId, Store updatedStore) {
+        Store store = storeRepository.findByCompanyId(companyId);
+        if (store != null) {
+            store.setName(updatedStore.getName());
+            store.setAddress(updatedStore.getAddress());
+            store.setPhoneNumber(updatedStore.getPhoneNumber());
+            store.setDescription(updatedStore.getDescription());
+            return storeRepository.save(store);
         } else {
             return null;
         }
@@ -65,26 +58,35 @@ public class StoreService {
         return storeRepository.findById(id);
     }
 
-    public Store findByExternalId(String externalId) {
-        return storeRepository.findByExternalId(externalId);
+    // 가게 등록 요청 저장
+    public StoreRequest registerStoreRequest(StoreRequest storeRequest) {
+        return storeRequestRepository.save(storeRequest);
     }
 
-
-    public Store getStoreByCompanyId(String companyId) {
-        return storeRepository.findByCompanyId(companyId);
-    }
-
-    public Store getStoreByExternalId(String externalId) {
-        return storeRepository.findByExternalId(externalId);
-    }
-
-    public boolean deleteStore(String companyId) {
-        Store store = storeRepository.findByCompanyId(companyId);
-        if (store != null) {
-            storeRepository.delete(store);
-            return true;
+    // 가게 등록 요청 승인
+    public Store approveStore(Long requestId) {
+        Optional<StoreRequest> storeRequestOpt = storeRequestRepository.findById(requestId);
+        if (storeRequestOpt.isPresent()) {
+            StoreRequest storeRequest = storeRequestOpt.get();
+            Store store = new Store();
+            store.setName(storeRequest.getName());
+            store.setFoodType(storeRequest.getFoodType());
+            store.setAddress(storeRequest.getAddress());
+            store.setImageUrl(storeRequest.getImageUrl());
+            store.setPhoneNumber(storeRequest.getPhoneNumber());
+            store.setDescription(storeRequest.getDescription());
+            store.setCompanyId(storeRequest.getCompanyId());
+            store.setRegistrationDate(LocalDateTime.now());
+            storeRepository.save(store);
+            storeRequestRepository.delete(storeRequest);
+            return store;
+        } else {
+            return null;
         }
-        return false;
     }
 
+    // 모든 가게 등록 요청 조회
+    public List<StoreRequest> getAllStoreRequests() {
+        return storeRequestRepository.findAll();
+    }
 }
