@@ -40,6 +40,7 @@ public class StoreService {
             store.setAddress(updatedStore.getAddress());
             store.setPhoneNumber(updatedStore.getPhoneNumber());
             store.setDescription(updatedStore.getDescription());
+            store.setCompanyId(updatedStore.getCompanyId());
             return storeRepository.save(store);
         } else {
             return null;
@@ -89,5 +90,18 @@ public class StoreService {
     // 모든 가게 등록 요청 조회
     public List<StoreRequest> getAllStoreRequests() {
         return storeRequestRepository.findAll();
+    }
+
+    public boolean deleteStore(String companyId) {
+        Store store = storeRepository.findByCompanyId(companyId);
+        if (store != null) {
+            storeRepository.delete(store);
+            return true;
+        }
+        return false;
+    }
+
+    public Store getStoreByExternalId(String externalId) {
+        return storeRepository.findByExternalId(externalId);
     }
 }
