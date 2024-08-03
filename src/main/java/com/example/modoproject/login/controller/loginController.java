@@ -9,8 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-
 import java.util.logging.Logger;
 
 @Controller
@@ -26,18 +24,21 @@ public class loginController {
         HttpSession session = request.getSession(false);
         if (session != null) {
             String sessionId = session.getId();
-            logger.info("Session ID: " + sessionId);
+            String externalId = (String) session.getAttribute("externalId");
+            logger.info("External ID: " + externalId);
         } else {
             logger.info("No active session");
         }
 
         return "redirect:http://localhost:3000/Main";
     }
+
     @GetMapping("/logout")
     @ResponseBody
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("userInfo");
+        session.removeAttribute("externalId");
         session.invalidate();
         return "{\"message\":\"로그아웃 되었습니다.\", \"redirectUrl\":\"http://localhost:3000/Main\"}";
     }

@@ -28,14 +28,26 @@ public class StoreService {
         return storeRepository.findByCompanyId(companyId);
     }
 
-    public Store updateStore(String companyId, Store updatedStore) {
-        Store store = storeRepository.findByCompanyId(companyId);
-        if (store != null) {
-            store.setName(updatedStore.getName());
-            store.setAddress(updatedStore.getAddress());
-            store.setPhoneNumber(updatedStore.getPhoneNumber());
-            store.setDescription(updatedStore.getDescription());
-            return storeRepository.save(store);
+    public Store updateStore(String oldCompanyId, Store updatedStore) {
+        Store existingStore = storeRepository.findByCompanyId(oldCompanyId);
+        if (existingStore != null) {
+            // 업데이트할 필드 설정
+            existingStore.setName(updatedStore.getName());
+            existingStore.setAddress(updatedStore.getAddress());
+            existingStore.setPhoneNumber(updatedStore.getPhoneNumber());
+            existingStore.setFoodType(updatedStore.getFoodType());
+            existingStore.setImageUrl(updatedStore.getImageUrl());
+            existingStore.setDescription(updatedStore.getDescription());
+
+            if (updatedStore.getCompanyId() != null && !updatedStore.getCompanyId().equals(oldCompanyId)) {
+                Store existingStoreWithNewCompanyId = storeRepository.findByCompanyId(updatedStore.getCompanyId());
+                if (existingStoreWithNewCompanyId != null) {
+                    throw new IllegalArgumentException("새로운 companyId가 이미 사용 중입니다.");
+                }
+                existingStore.setCompanyId(updatedStore.getCompanyId());
+            }
+
+            return storeRepository.save(existingStore);
         } else {
             return null;
         }
@@ -51,5 +63,18 @@ public class StoreService {
 
     public Optional<Store> findById(Long id) {
         return storeRepository.findById(id);
+    }
+
+    public Store findByExternalId(String externalId) {
+        return storeRepository.findByExternalId(externalId);
+    }
+
+
+    public Store getStoreByCompanyId(String companyId) {
+        return storeRepository.findByCompanyId(companyId);
+    }
+
+    public Store getStoreByExternalId(String externalId) {
+        return storeRepository.findByExternalId(externalId);
     }
 }

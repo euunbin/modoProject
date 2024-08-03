@@ -1,31 +1,27 @@
 package com.example.modoproject.BusinessOwnerRegister.entity;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-public class Store{
+public class Store {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name; //업체명
-    private String foodType; //음식 종류 예시 = 한식, 중식, 양식
-    private String address; //주소지
-    private String imageUrl; //이미지 저장 주소 경로
-    private String phoneNumber; //가게 전화번호
-    private String description; //설명
-    private LocalDateTime registrationDate; //가입 날짜
-    private String companyId; //업체ID, 가맹점 식별 코드
-
-    public String getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(String companyId) {
-        this.companyId = companyId;
-    }
+    private String name; // 업체명
+    private String foodType; // 음식 종류 예시 = 한식, 중식, 양식
+    private String address; // 주소지
+    private String imageUrl; // 이미지 저장 주소 경로
+    private String phoneNumber; // 가게 전화번호
+    private String description; // 설명
+    private LocalDateTime registrationDate; // 가입 날짜
+    private String companyId; // 업체ID, 가맹점 식별 코드
+    private String externalId;
 
     // Getters and Setters
     public Long getId() {
@@ -92,5 +88,19 @@ public class Store{
         this.registrationDate = registrationDate;
     }
 
-}
+    public String getCompanyId() {
+        return companyId;
+    }
 
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    public String getExternalId() {
+        return externalId;
+    }
+
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
+}
