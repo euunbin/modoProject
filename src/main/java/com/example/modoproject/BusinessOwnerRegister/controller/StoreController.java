@@ -1,5 +1,7 @@
 package com.example.modoproject.BusinessOwnerRegister.controller;
 
+import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
+import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
 import com.example.modoproject.BusinessOwnerRegister.Service.StoreService;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.BusinessOwnerRegister.entity.StoreRequest;
@@ -16,6 +18,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.*;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -27,6 +30,9 @@ public class StoreController {
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private MenuRepository menuRepository; // Assuming you have this repository
 
     private final Path uploadDir = Paths.get("src/main/resources/static/storeImg");
 
@@ -140,5 +146,22 @@ public class StoreController {
     public ResponseEntity<List<StoreRequest>> getAllStoreRequests() {
         List<StoreRequest> storeRequests = storeService.getAllStoreRequests();
         return ResponseEntity.ok(storeRequests);
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Store>> getAllStores() {
+        List<Store> stores = storeService.getAllStores();
+        return ResponseEntity.ok(stores);
+    }
+    @GetMapping("/{id}") // StoreList에 사용
+    public ResponseEntity<Store> getStoreById(@PathVariable Long id) {
+        Optional<Store> store = storeService.findById(id);
+        return store.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/{companyId}/menu") //StoreDetail에 사용
+    public ResponseEntity<List<Menu>> getMenuByStoreCompanyId(@PathVariable String companyId) {
+        List<Menu> menu = menuRepository.findByCompanyId(companyId);
+        return ResponseEntity.ok(menu);
     }
 }
