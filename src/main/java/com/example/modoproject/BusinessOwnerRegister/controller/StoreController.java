@@ -2,6 +2,7 @@ package com.example.modoproject.BusinessOwnerRegister.controller;
 
 import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
 import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
+import com.example.modoproject.BusinessOwnerDashBoard.service.MenuService;
 import com.example.modoproject.BusinessOwnerRegister.Service.StoreService;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.BusinessOwnerRegister.entity.StoreRequest;
@@ -34,6 +35,9 @@ public class StoreController {
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private MenuService menuService; // MenuService 주입
 
     @Autowired
     private MenuRepository menuRepository; // Assuming you have this repository
@@ -131,14 +135,13 @@ public class StoreController {
     public ResponseEntity<Store> updateStore(@PathVariable String companyId, @RequestBody Store store) {
         try {
             Store updatedStore = storeService.updateStore(companyId, store);
-            // 세션 업데이트
             if (updatedStore != null) {
                 String newCompanyId = updatedStore.getCompanyId();
 
-                if (companyId.equals("Not Found") || companyId.equals("")) {
-                    storeService.updateCompanyIdInSession(newCompanyId);
-                } else if (!companyId.equals(newCompanyId)) {
-                    storeService.updateCompanyIdInSession(newCompanyId);
+                if (!companyId.equals(newCompanyId)) {
+                    menuService.updateMenuCompanyId(companyId, newCompanyId);
+                    session.setAttribute("companyId", newCompanyId);
+                    logger.info("Updated companyId in session to: " + newCompanyId);
                 }
 
                 return ResponseEntity.ok(updatedStore);
@@ -154,6 +157,8 @@ public class StoreController {
     public ResponseEntity<Void> deleteStore(@PathVariable String companyId) {
         boolean isDeleted = storeService.deleteStore(companyId);
         if (isDeleted) {
+            menuService.deleteMenusByCompanyId(companyId);
+
             // 세션에서 companyId 삭제
             if (session.getAttribute("companyId") != null) {
                 session.removeAttribute("companyId");

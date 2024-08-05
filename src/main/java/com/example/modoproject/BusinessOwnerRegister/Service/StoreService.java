@@ -1,5 +1,6 @@
 package com.example.modoproject.BusinessOwnerRegister.Service;
 
+import com.example.modoproject.BusinessOwnerDashBoard.service.MenuService;
 import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRepository;
 import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRequestRepository;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
@@ -31,6 +32,8 @@ public class StoreService {
     @Autowired
     private HttpServletRequest request;
 
+    @Autowired
+    private MenuService menuService;
     private static final Logger logger = LoggerFactory.getLogger(StoreService.class);
 
     private HttpSession getSession() {
@@ -49,12 +52,28 @@ public class StoreService {
     public Store updateStore(String companyId, Store updatedStore) {
         Store store = storeRepository.findByCompanyId(companyId);
         if (store != null) {
+            String oldCompanyId = store.getCompanyId();
             store.setName(updatedStore.getName());
             store.setAddress(updatedStore.getAddress());
             store.setPhoneNumber(updatedStore.getPhoneNumber());
             store.setDescription(updatedStore.getDescription());
             store.setCompanyId(updatedStore.getCompanyId());
-            return storeRepository.save(store);
+            store.setImageUrl(updatedStore.getImageUrl());
+            Store updatedStoreInDb = storeRepository.save(store);
+
+            HttpSession session = getSession();
+            String newCompanyId = updatedStore.getCompanyId();
+            String sessionCompanyId = (String) session.getAttribute("companyId");
+
+            if (!newCompanyId.equals(sessionCompanyId)) {
+                session.setAttribute("companyId", newCompanyId);
+
+                if (oldCompanyId != null && !oldCompanyId.equals(newCompanyId)) {
+                    menuService.updateMenuCompanyId(oldCompanyId, newCompanyId);
+                }
+            }
+
+            return updatedStoreInDb;
         } else {
             return null;
         }
