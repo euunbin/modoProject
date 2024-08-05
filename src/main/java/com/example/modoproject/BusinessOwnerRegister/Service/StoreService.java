@@ -5,6 +5,10 @@ import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRequestRepo
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.BusinessOwnerRegister.entity.StoreRequest;
 import com.example.modoproject.Favorites.repository.FavoritesRepository;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +27,15 @@ public class StoreService {
 
     @Autowired
     private FavoritesRepository favoritesRepository;
+
+    @Autowired
+    private HttpServletRequest request;
+
+    private static final Logger logger = LoggerFactory.getLogger(StoreService.class);
+
+    private HttpSession getSession() {
+        return request.getSession();
+    }
 
     public Store registerStore(Store store) {
         store.setRegistrationDate(LocalDateTime.now());
@@ -59,12 +72,10 @@ public class StoreService {
         return storeRepository.findById(id);
     }
 
-    // 가게 등록 요청 저장
     public StoreRequest registerStoreRequest(StoreRequest storeRequest) {
         return storeRequestRepository.save(storeRequest);
     }
 
-    // 가게 등록 요청 승인
     public Store approveStore(Long requestId) {
         Optional<StoreRequest> storeRequestOpt = storeRequestRepository.findById(requestId);
         if (storeRequestOpt.isPresent()) {
@@ -77,7 +88,7 @@ public class StoreService {
             store.setPhoneNumber(storeRequest.getPhoneNumber());
             store.setDescription(storeRequest.getDescription());
             store.setCompanyId(storeRequest.getCompanyId());
-            store.setExternalId(storeRequest.getExternalId()); // externalId 설정
+            store.setExternalId(storeRequest.getExternalId());
             store.setRegistrationDate(LocalDateTime.now());
             storeRepository.save(store);
             storeRequestRepository.delete(storeRequest);
@@ -87,7 +98,7 @@ public class StoreService {
         }
     }
 
-    // 모든 가게 등록 요청 조회
+
     public List<StoreRequest> getAllStoreRequests() {
         return storeRequestRepository.findAll();
     }
@@ -104,4 +115,42 @@ public class StoreService {
     public Store getStoreByExternalId(String externalId) {
         return storeRepository.findByExternalId(externalId);
     }
+
+    public String getCompanyIdByExternalId(String externalId) {
+        Store store = storeRepository.findByExternalId(externalId);
+        return (store != null) ? store.getCompanyId() : "Not Found";
+    }
+
+    public void updateCompanyIdInSession(String newCompanyId) {
+        HttpSession session = getSession();
+        String externalId = (String) session.getAttribute("externalId");
+
+        if (externalId != null) {
+            Store store = storeRepository.findByExternalId(externalId);
+            if (store != null) {
+                String currentCompanyId = store.getCompanyId();
+                logger.info("Current companyId in store: " + currentCompanyId);
+
+                if (newCompanyId == null || newCompanyId.isEmpty()) {
+                    if (currentCompanyId == null || !currentCompanyId.equals("업체 미등록")) {
+                        store.setCompanyId("업체 미등록");
+                        session.removeAttribute("companyId");
+                        logger.info("Set companyId to '업체 미등록' and removed from session.");
+                    }
+                } else {
+                    if (currentCompanyId == null || currentCompanyId.equals("업체 미등록") || !currentCompanyId.equals(newCompanyId)) {
+                        store.setCompanyId(newCompanyId);
+                        session.setAttribute("companyId", newCompanyId);
+                        logger.info("Updated companyId in store to: " + newCompanyId);
+                    }
+                }
+                storeRepository.save(store);
+            } else {
+                logger.info("Store not found for externalId: " + externalId);
+            }
+        } else {
+            logger.info("No externalId found in session.");
+        }
+    }
+
 }
