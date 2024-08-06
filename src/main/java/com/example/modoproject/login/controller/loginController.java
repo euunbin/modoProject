@@ -1,5 +1,6 @@
 package com.example.modoproject.login.controller;
 
+import com.example.modoproject.BusinessOwnerRegister.Service.StoreService;
 import com.example.modoproject.login.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -19,26 +20,46 @@ public class loginController {
     @Autowired
     private HttpSession httpSession;
 
+    @Autowired
+    private StoreService storeService;
+
     @GetMapping
     public String login(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
-            String sessionId = session.getId();
             String externalId = (String) session.getAttribute("externalId");
-            logger.info("External ID: " + externalId);
+
+            if (externalId != null) {
+                // StoreService를 사용하여 companyId 가져오기
+                String companyId = storeService.getCompanyIdByExternalId(externalId);
+
+                if (companyId != null) {
+                    logger.info("External ID: " + externalId);
+                    logger.info("Company ID: " + companyId);
+
+                    session.setAttribute("externalId", externalId);
+                    session.setAttribute("companyId", companyId);
+                } else {
+                    logger.info("External ID: " + externalId);
+                    logger.info("Company ID: 업체 미등록");
+
+                    session.setAttribute("externalId", externalId);
+                    session.setAttribute("companyId", "업체 미등록"); // 회사 ID가 없는 경우에 대한 처리
+                }
+            }
         } else {
-            logger.info("No active session");
+            logger.info("No active session.");
         }
 
         return "redirect:http://localhost:3000/Main";
     }
-
     @GetMapping("/logout")
     @ResponseBody
     public String logout(HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.removeAttribute("userInfo");
         session.removeAttribute("externalId");
+        session.removeAttribute("companyId");
         session.invalidate();
         return "{\"message\":\"로그아웃 되었습니다.\", \"redirectUrl\":\"http://localhost:3000/Main\"}";
     }

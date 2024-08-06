@@ -2,6 +2,7 @@ package com.example.modoproject.BusinessOwnerDashBoard.service;
 
 import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
 import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -89,5 +90,27 @@ public class MenuService {
         image.transferTo(filePath);
 
         return "/menuimage/" + filename;
+    }
+
+    public void updateMenuCompanyId(String oldCompanyId, String newCompanyId) {
+        List<Menu> menus = menuRepository.findByCompanyId(oldCompanyId);
+
+        if (menus != null && !menus.isEmpty()) {
+            for (Menu menu : menus) {
+                if (menu.getCompanyId().equals(oldCompanyId)) {
+                    menu.setCompanyId(newCompanyId);
+                    menuRepository.save(menu);
+                }
+            }
+        }
+    }
+
+    public List<Menu> getMenusByCompanyId(String companyId) {
+        // Implement the logic to fetch menus by companyId
+        return menuRepository.findByCompanyId(companyId);
+    }
+    @Transactional
+    public void deleteMenusByCompanyId(String companyId) {
+        menuRepository.deleteByCompanyId(companyId);
     }
 }

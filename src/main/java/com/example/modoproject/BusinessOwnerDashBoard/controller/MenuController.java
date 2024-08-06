@@ -26,17 +26,27 @@ public class MenuController {
 
     @GetMapping("/list")
     public ResponseEntity<List<Menu>> showMenuList() {
-        List<Menu> menuList = menuService.getAllMenus();
+        HttpSession session = httpServletRequest.getSession();
+        String companyId = (String) session.getAttribute("companyId");
+
+        if (companyId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        List<Menu> menuList = menuService.getMenusByCompanyId(companyId);
         return ResponseEntity.ok(menuList);
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Menu> addMenu(@RequestParam("companyId") String companyId,
-                                        @RequestParam("name") String name,
+    public ResponseEntity<Menu> addMenu(@RequestParam("name") String name,
                                         @RequestParam("price") int price,
                                         @RequestParam("image") MultipartFile image) throws IOException {
         HttpSession session = httpServletRequest.getSession();
-        session.setAttribute("companyId", companyId);
+        String companyId = (String) session.getAttribute("companyId");
+
+        if (companyId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
 
         Menu menu = menuService.saveMenu(companyId, name, price, image);
         return ResponseEntity.ok(menu);

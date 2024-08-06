@@ -2,9 +2,12 @@ package com.example.modoproject.BusinessOwnerRegister.controller;
 
 import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
 import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
+import com.example.modoproject.BusinessOwnerDashBoard.service.MenuService;
 import com.example.modoproject.BusinessOwnerRegister.Service.StoreService;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.BusinessOwnerRegister.entity.StoreRequest;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -25,11 +28,16 @@ import java.util.UUID;
 @RequestMapping("/api/stores")
 public class StoreController {
 
+    private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
+
     @Autowired
     private StoreService storeService;
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private MenuService menuService; // MenuService 주입
 
     @Autowired
     private MenuRepository menuRepository; // Assuming you have this repository
@@ -113,6 +121,10 @@ public class StoreController {
     public ResponseEntity<Store> approveStore(@PathVariable Long requestId) {
         Store store = storeService.approveStore(requestId);
         if (store != null) {
+            String companyId = store.getCompanyId();
+            // 세션에 companyId 저장
+            session.setAttribute("companyId", companyId);
+            logger.info("Current companyId in session: " + companyId); // 로그 출력
             return ResponseEntity.ok(store);
         } else {
             return ResponseEntity.notFound().build();
@@ -123,10 +135,19 @@ public class StoreController {
     public ResponseEntity<Store> updateStore(@PathVariable String companyId, @RequestBody Store store) {
         try {
             Store updatedStore = storeService.updateStore(companyId, store);
-            if (updatedStore == null) {
+            if (updatedStore != null) {
+                String newCompanyId = updatedStore.getCompanyId();
+
+                if (!companyId.equals(newCompanyId)) {
+                    menuService.updateMenuCompanyId(companyId, newCompanyId);
+                    session.setAttribute("companyId", newCompanyId);
+                    logger.info("Updated companyId in session to: " + newCompanyId);
+                }
+
+                return ResponseEntity.ok(updatedStore);
+            } else {
                 return ResponseEntity.notFound().build();
             }
-            return ResponseEntity.ok(updatedStore);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.badRequest().body(null);
         }
@@ -136,6 +157,13 @@ public class StoreController {
     public ResponseEntity<Void> deleteStore(@PathVariable String companyId) {
         boolean isDeleted = storeService.deleteStore(companyId);
         if (isDeleted) {
+            menuService.deleteMenusByCompanyId(companyId);
+
+            // 세션에서 companyId 삭제
+            if (session.getAttribute("companyId") != null) {
+                session.removeAttribute("companyId");
+                logger.info("Deleted companyId from session: " + companyId);
+            }
             return ResponseEntity.noContent().build();
         } else {
             return ResponseEntity.notFound().build();
