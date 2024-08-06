@@ -28,7 +28,7 @@
 
     function fetchUserNicknameAndInfo() {
         $.get("login/user/nickname", function(nicknameData) {
-            $.get("login/user/info", function(infoData) {
+            $.get("/api/userinfo", function(infoData) {
                 iamportPayment(nicknameData, infoData);
             });
         });

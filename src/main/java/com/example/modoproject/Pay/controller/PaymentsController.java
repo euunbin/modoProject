@@ -1,12 +1,11 @@
-package com.example.modoproject.Pay.controller;
-
 import com.example.modoproject.Pay.entity.Payment;
 import com.example.modoproject.Pay.service.PaymentService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -24,6 +23,7 @@ public class PaymentsController {
     public List<Payment> getAllPayments() {
         return paymentService.getAllPayments();
     }
+
     @GetMapping("/iamport")
     public String iamport() {
         return "index";
@@ -39,5 +39,11 @@ public class PaymentsController {
 
         paymentService.savePayment(payment);
         return "Payment saved successfully";
+    }
+
+    @PostMapping("/payment")
+    public ResponseEntity<String> processPayment(@RequestBody Payment payment) {
+        paymentService.savePayment(payment);
+        return ResponseEntity.ok("결제가 성공적으로 완료되었습니다.");
     }
 }
