@@ -1,3 +1,5 @@
+package com.example.modoproject.Pay.controller;
+
 import com.example.modoproject.Pay.entity.Payment;
 import com.example.modoproject.Pay.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,6 @@ public class PaymentsController {
     public String paymentCallback(@RequestBody Payment payment) {
         HttpSession session = httpServletRequest.getSession();
         String externalId = (String) session.getAttribute("externalId");
-        String companyId = (String) session.getAttribute("companyId");
         payment.setExternalId(externalId);
 
         paymentService.savePayment(payment);
