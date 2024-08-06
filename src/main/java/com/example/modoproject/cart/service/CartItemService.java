@@ -14,7 +14,7 @@ public class CartItemService {
     private CartItemRepository cartItemRepository;
 
     // 장바구니에 항목 추가
-    public CartItenEntity addToCart(String merchanUid, Long companyId, String name, int price, int count, String imageUrl, String externalId) {
+    public CartItenEntity addToCart(String merchanUid, String companyId, String name, int price, int count, String imageUrl, String externalId) {
         // 같은 메뉴가 이미 장바구니에 있는지 확인
         CartItenEntity existingCartItem = cartItemRepository.findByMerchanUidAndCompanyIdAndExternalId(merchanUid, companyId, externalId);
         if (existingCartItem != null) {
@@ -45,5 +45,12 @@ public class CartItemService {
     // 장바구니에서 항목 삭제
     public void removeFromCart(Long id) {
         cartItemRepository.deleteById(id);
+    }
+
+    public void updateCartItemQuantity(Long id, int newCount) {
+        CartItenEntity item = cartItemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
+        item.setCount(newCount);
+        item.setMoneyTotal(item.getPrice() * newCount);
+        cartItemRepository.save(item);
     }
 }

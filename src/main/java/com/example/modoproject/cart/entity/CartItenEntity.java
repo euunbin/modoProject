@@ -11,7 +11,7 @@ public class CartItenEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String merchanUid;
-    private Long companyId;
+    private String companyId;
     private String name;
     private int price;
     private int moneyTotal;
@@ -36,11 +36,11 @@ public class CartItenEntity {
         this.merchanUid = merchanUid;
     }
 
-    public Long getCompanyId() {
+    public String getCompanyId() {
         return companyId;
     }
 
-    public void setCompanyId(Long companyId) {
+    public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
 
