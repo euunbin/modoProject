@@ -192,4 +192,15 @@ public class StoreController {
         List<Menu> menu = menuRepository.findByCompanyId(companyId);
         return ResponseEntity.ok(menu);
     }
+
+    @GetMapping("/{companyId}/name")
+    public ResponseEntity<String> getStoreNameByCompanyId(@PathVariable String companyId) {
+        Store store = storeService.findByCompanyId(companyId);
+        if (store != null) {
+            return ResponseEntity.ok(store.getName());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

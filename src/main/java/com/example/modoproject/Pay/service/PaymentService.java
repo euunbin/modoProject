@@ -21,4 +21,8 @@ public class PaymentService {
     public List<Payment> getAllPayments() {
         return paymentRepository.findAll();
     }
+
+    public List<Payment> getPaymentsByExternalId(String externalId) {
+        return paymentRepository.findByExternalId(externalId);
+    }
 }

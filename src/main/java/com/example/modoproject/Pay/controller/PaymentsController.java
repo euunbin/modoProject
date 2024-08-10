@@ -9,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.http.ResponseEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -46,5 +47,17 @@ public class PaymentsController {
     public ResponseEntity<String> processPayment(@RequestBody Payment payment) {
         paymentService.savePayment(payment);
         return ResponseEntity.ok("결제가 성공적으로 완료되었습니다.");
+    }
+
+    @GetMapping("/payments/user")
+    public List<Payment> getUserPayments() {
+        HttpSession session = httpServletRequest.getSession();
+        String externalId = (String) session.getAttribute("externalId");
+
+        if (externalId != null) {
+            return paymentService.getPaymentsByExternalId(externalId);
+        } else {
+            return new ArrayList<>();
+        }
     }
 }
