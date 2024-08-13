@@ -4,6 +4,7 @@ import com.example.modoproject.Review.entity.Review;
 import com.example.modoproject.Review.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class ReviewService {
     @Autowired
     private ReviewRepository reviewRepository;
 
-    private final String uploadDir = "src/main/resources/static/review";
+    private final String uploadDir = "src/main/resources/static/reviewImg";
 
     public void saveReview(String author, String content, MultipartFile image, String externalId, String merchantUid) throws IOException {
         Review review = new Review();
@@ -29,38 +30,39 @@ public class ReviewService {
         review.setExternalId(externalId);
         review.setMerchantUid(merchantUid);
 
-        if (!image.isEmpty()) {
+        if (image != null && !image.isEmpty()) {
             String imageName = image.getOriginalFilename();
             Path imagePath = Paths.get(uploadDir, imageName);
             Files.createDirectories(imagePath.getParent());
             Files.write(imagePath, image.getBytes());
 
-            review.setImageUrl("/" + uploadDir + "/" + imageName);
+            review.setImageUrl("/reviewImg/" + imageName);
         }
 
-        if (review.getCreatedDateTime() == null) {
-            review.setCreatedDateTime(LocalDateTime.now());
-        }
-
+        review.setCreatedDateTime(LocalDateTime.now());
         reviewRepository.save(review);
     }
 
+    @Transactional
     public void updateReview(Long id, String content, MultipartFile image) throws IOException {
         Optional<Review> optionalReview = reviewRepository.findById(id);
         if (optionalReview.isPresent()) {
             Review review = optionalReview.get();
             review.setContent(content);
 
-            if (!image.isEmpty()) {
+            if (image != null && !image.isEmpty()) {
                 String imageName = image.getOriginalFilename();
                 Path imagePath = Paths.get(uploadDir, imageName);
                 Files.createDirectories(imagePath.getParent());
                 Files.write(imagePath, image.getBytes());
 
-                review.setImageUrl("/" + uploadDir + "/" + imageName);
+                review.setImageUrl("/reviewImg/" + imageName);
             }
 
             reviewRepository.save(review);
+            System.out.println("Review updated: " + id);
+        } else {
+            System.out.println("Review not found: " + id);
         }
     }
 
@@ -74,5 +76,9 @@ public class ReviewService {
 
     public List<Review> findAll() {
         return reviewRepository.findAll();
+    }
+
+    public List<Review> findByMerchantUidAndExternalId(String merchantUid, String externalId) {
+        return reviewRepository.findByMerchantUidAndExternalId(merchantUid, externalId);
     }
 }
