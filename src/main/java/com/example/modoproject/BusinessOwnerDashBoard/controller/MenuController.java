@@ -1,5 +1,7 @@
 package com.example.modoproject.BusinessOwnerDashBoard.controller;
 
+import com.example.modoproject.Review.entity.Review;
+import com.example.modoproject.Review.service.ReviewService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,8 @@ import com.example.modoproject.BusinessOwnerDashBoard.service.MenuService;
 @RestController
 @RequestMapping("/menus")
 public class MenuController {
+    @Autowired
+    private ReviewService reviewService;
 
     @Autowired
     private MenuService menuService;

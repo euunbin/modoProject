@@ -9,4 +9,7 @@ import java.util.List;
 @Repository
 public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByMerchantUidAndExternalId(String merchantUid, String externalId);
+
+    List<Review> findByMerchantUidIn(List<String> merchantUids);
+
 }

@@ -3,9 +3,13 @@ package com.example.modoproject.BusinessOwnerRegister.controller;
 import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
 import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
 import com.example.modoproject.BusinessOwnerDashBoard.service.MenuService;
+import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRepository;
 import com.example.modoproject.BusinessOwnerRegister.Service.StoreService;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.BusinessOwnerRegister.entity.StoreRequest;
+import com.example.modoproject.Review.entity.Review;
+import com.example.modoproject.Review.service.ReviewService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +27,24 @@ import java.nio.file.*;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/stores")
 public class StoreController {
 
     private static final Logger logger = LoggerFactory.getLogger(StoreController.class);
+    @Autowired
+    private StoreRepository storeRepository;
+
+    @Autowired
+    private MenuRepository menuRepository;
+
+    @Autowired
+    private ReviewService reviewService;
+
+    @Autowired
+    private HttpServletRequest httpServletRequest;
 
     @Autowired
     private StoreService storeService;
@@ -38,9 +54,6 @@ public class StoreController {
 
     @Autowired
     private MenuService menuService; // MenuService 주입
-
-    @Autowired
-    private MenuRepository menuRepository; // Assuming you have this repository
 
     private final Path uploadDir = Paths.get("src/main/resources/static/storeImg");
 
@@ -203,4 +216,26 @@ public class StoreController {
         }
     }
 
+    @GetMapping("/my-store-reviews")
+    public ResponseEntity<List<Review>> getMyStoreReviews() {
+        HttpSession session = httpServletRequest.getSession();
+        String companyId = (String) session.getAttribute("companyId");
+
+        if (companyId != null) {
+            List<Menu> menus = menuRepository.findByCompanyId(companyId);
+            if (menus.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND); // No menus found
+            }
+
+            List<String> merchantUids = menus.stream()
+                    .map(Menu::getMerchanUid)
+                    .collect(Collectors.toList());
+
+            List<Review> reviews = reviewService.findByMerchantUids(merchantUids);
+
+            return new ResponseEntity<>(reviews, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+    }
 }

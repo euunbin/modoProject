@@ -70,7 +70,7 @@ public class ReviewController {
         return new ResponseEntity<>(reviewList, HttpStatus.OK);
     }
 
-    @GetMapping("/list/{merchantUid}")
+    @GetMapping("/list/{merchantUid}") // 결제내역 - 상품에 따른 리뷰 작성
     public ResponseEntity<List<Review>> listReviewsByMerchantUid(@PathVariable("merchantUid") String merchantUid) {
         HttpSession session = httpServletRequest.getSession();
         User user = (User) session.getAttribute("user");

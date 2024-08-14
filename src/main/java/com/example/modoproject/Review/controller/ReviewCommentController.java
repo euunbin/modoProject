@@ -5,14 +5,14 @@ import com.example.modoproject.Review.entity.ReviewComment;
 import com.example.modoproject.Review.repository.ReviewCommentRepository;
 import com.example.modoproject.Review.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
-@Controller
+@RestController
+@RequestMapping("/api/review")
 public class ReviewCommentController {
 
     @Autowired
@@ -21,63 +21,56 @@ public class ReviewCommentController {
     @Autowired
     private ReviewCommentRepository reviewCommentRepository;
 
-    @GetMapping("/review/comment/{reviewId}")
-    public String showReviewDetail(@PathVariable("reviewId") Long reviewId, Model model) {
+    @GetMapping("/{reviewId}/comments")
+    public ResponseEntity<?> getComments(@PathVariable("reviewId") Long reviewId) {
         Optional<Review> optionalReview = reviewService.findById(reviewId);
         if (optionalReview.isPresent()) {
             Review review = optionalReview.get();
-            model.addAttribute("review", review);
-
             List<ReviewComment> comments = reviewCommentRepository.findByReviewId(reviewId);
-            model.addAttribute("comments", comments);
-
-            return "reviewdetail";
+            return ResponseEntity.ok(comments);
         }
-        return "redirect:/review/list";
+        return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/review/comment/{reviewId}")
-    public String addComment(@PathVariable("reviewId") Long reviewId,
-                             @RequestParam("commentContent") String content) {
+    @PostMapping("/{reviewId}/comments")
+    public ResponseEntity<?> addComment(@PathVariable("reviewId") Long reviewId,
+                                        @RequestBody ReviewComment commentRequest) {
         Optional<Review> optionalReview = reviewService.findById(reviewId);
         if (optionalReview.isPresent()) {
             Review review = optionalReview.get();
 
-            List<ReviewComment> existingComments = reviewCommentRepository.findByReviewId(reviewId);
-            if (!existingComments.isEmpty()) {
-                return "redirect:/review/comment/" + reviewId;
-            }
-
-            // 대댓글 저장
             ReviewComment comment = new ReviewComment();
-            comment.setContent(content);
+            comment.setContent(commentRequest.getContent());
             comment.setReview(review);
             reviewCommentRepository.save(comment);
+
+            return ResponseEntity.ok(comment);
         }
-        return "redirect:/review/comment/" + reviewId;
+        return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/review/comment/edit")
-    public String editComment(@RequestParam("commentId") Long commentId,
-                              @RequestParam("commentContent") String content) {
+    @PutMapping("/comments/{commentId}")
+    public ResponseEntity<?> updateComment(@PathVariable("commentId") Long commentId,
+                                           @RequestBody ReviewComment commentRequest) {
         Optional<ReviewComment> optionalComment = reviewCommentRepository.findById(commentId);
         if (optionalComment.isPresent()) {
             ReviewComment comment = optionalComment.get();
-            comment.setContent(content);
+            comment.setContent(commentRequest.getContent());
             reviewCommentRepository.save(comment);
+            return ResponseEntity.ok(comment);
         }
-        return "redirect:/review/list";
+        return ResponseEntity.notFound().build();
     }
 
-    @PostMapping("/review/comment/delete/{commentId}")
-    public String deleteComment(@PathVariable("commentId") Long commentId) {
+    @DeleteMapping("/comments/{commentId}")
+    public ResponseEntity<?> deleteComment(@PathVariable("commentId") Long commentId) {
         Optional<ReviewComment> optionalComment = reviewCommentRepository.findById(commentId);
         if (optionalComment.isPresent()) {
             ReviewComment comment = optionalComment.get();
             Long reviewId = comment.getReview().getId();
             reviewCommentRepository.delete(comment);
-            return "redirect:/review/comment/" + reviewId; // 리뷰 상세 페이지로 리디렉션
+            return ResponseEntity.ok().build();
         }
-        return "redirect:/review/list";
+        return ResponseEntity.notFound().build();
     }
 }

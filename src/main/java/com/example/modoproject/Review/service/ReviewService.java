@@ -1,5 +1,7 @@
 package com.example.modoproject.Review.service;
 
+import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
+import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
 import com.example.modoproject.Review.entity.Review;
 import com.example.modoproject.Review.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,11 @@ import java.util.Optional;
 
 @Service
 public class ReviewService {
+
+
+    @Autowired
+    private MenuRepository menuRepository;
+
 
     @Autowired
     private ReviewRepository reviewRepository;
@@ -81,4 +88,9 @@ public class ReviewService {
     public List<Review> findByMerchantUidAndExternalId(String merchantUid, String externalId) {
         return reviewRepository.findByMerchantUidAndExternalId(merchantUid, externalId);
     }
+
+    public List<Review> findByMerchantUids(List<String> merchantUids) {
+        return reviewRepository.findByMerchantUidIn(merchantUids);
+    }
+
 }
