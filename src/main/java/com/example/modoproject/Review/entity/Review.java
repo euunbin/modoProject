@@ -21,12 +21,13 @@ public class Review {
     private String content;
     private String externalId;
     private String merchantUid;
-
     private String imageUrl;
 
     @NotNull
     @Column(nullable = false)
     private LocalDateTime createdDateTime;
+
+    private LocalDateTime updatedDateTime;
 
     // Getters and Setters
 
@@ -51,7 +52,12 @@ public class Review {
     }
 
     public void setContent(String content) {
-        this.content = content;
+        if (this.content != null && !this.content.equals(content)) {
+            this.content = content;
+            this.updatedDateTime = LocalDateTime.now();
+        } else {
+            this.content = content;
+        }
     }
 
     public String getImageUrl() {
@@ -70,6 +76,26 @@ public class Review {
         this.createdDateTime = createdDateTime;
     }
 
+    public LocalDateTime getUpdatedDateTime() {
+        return updatedDateTime;
+    }
+
+    public void setUpdatedDateTime(LocalDateTime updatedDateTime) {
+        this.updatedDateTime = updatedDateTime;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdDateTime == null) {
+            this.createdDateTime = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedDateTime = LocalDateTime.now();
+    }
+
     public String getExternalId() {
         return externalId;
     }
@@ -84,12 +110,5 @@ public class Review {
 
     public void setMerchantUid(String merchantUid) {
         this.merchantUid = merchantUid;
-    }
-
-    @PrePersist
-    protected void onCreate() {
-        if (this.createdDateTime == null) {
-            this.createdDateTime = LocalDateTime.now();
-        }
     }
 }

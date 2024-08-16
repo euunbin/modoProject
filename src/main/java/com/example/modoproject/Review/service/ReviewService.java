@@ -93,4 +93,7 @@ public class ReviewService {
         return reviewRepository.findByMerchantUidIn(merchantUids);
     }
 
+    public List<Review> findByMerchantUid(String merchantUid) {
+        return reviewRepository.findByMerchantUid(merchantUid);
+    }
 }

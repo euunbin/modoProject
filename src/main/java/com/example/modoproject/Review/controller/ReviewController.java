@@ -93,4 +93,10 @@ public class ReviewController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @GetMapping("/public/{merchantUid}") // 가게 상품의 모든 리뷰 조회
+    public ResponseEntity<List<Review>> listAllReviewsByMerchantUid(@PathVariable("merchantUid") String merchantUid) {
+        List<Review> reviews = reviewService.findByMerchantUid(merchantUid);
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
+    }
 }
