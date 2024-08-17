@@ -12,8 +12,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(unique = true)
+    @Column(nullable = false)
     private String externalId;
     private String profileImageUrl;
     private String nickname;
