@@ -1,5 +1,5 @@
 package com.example.modoproject.Pay.entity;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +14,10 @@ public class Payment {
 
     private String pg;
     private String payMethod;
+
+    @Column(length = 2000)  // 길이를 충분히 늘림
     private String merchantUid;
+
     private String name;
     private int amount;
     private String buyerEmail;
@@ -24,7 +27,7 @@ public class Payment {
     private String externalId;
     private String companyId;
 
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -105,11 +108,19 @@ public class Payment {
         this.buyerAddr = buyerAddr;
     }
 
-    public String getExternalId() { return externalId; }
+    public String getExternalId() {
+        return externalId;
+    }
 
-    public void setExternalId(String externalId) { this.externalId = externalId; }
-    public String getCompanyId() { return companyId; }
+    public void setExternalId(String externalId) {
+        this.externalId = externalId;
+    }
 
-    public void setCompanyId(String companyId) { this.companyId = companyId; }
+    public String getCompanyId() {
+        return companyId;
+    }
 
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
 }
