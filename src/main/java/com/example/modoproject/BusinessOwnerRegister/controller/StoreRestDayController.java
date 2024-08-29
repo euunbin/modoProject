@@ -53,4 +53,22 @@ public class StoreRestDayController {
 
         return ResponseEntity.ok(restDay);
     }
+
+    @GetMapping("/by-company")
+    public ResponseEntity<StoreRestDay> getRestDaysByCompanyId(@RequestParam String companyId) {
+        StoreRestDay restDay = storeRestDayService.getRestDaysByCompanyId(companyId);
+        if (restDay == null) {
+            // 빈 StoreRestDay 객체를 반환하여 클라이언트 측에서 404를 처리하지 않도록 함
+            restDay = new StoreRestDay();
+            restDay.setCompanyId(companyId);
+            restDay.setDailyRestDays("");
+            restDay.setPeriodRestDays("");
+            restDay.setWeeklyRestDays("");
+            return ResponseEntity.ok(restDay);
+        }
+
+        return ResponseEntity.ok(restDay);
+    }
+
+
 }
