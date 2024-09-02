@@ -5,6 +5,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
+import java.math.BigDecimal;
+
 @Entity
 public class Payment {
 
@@ -15,11 +17,12 @@ public class Payment {
     private String pg;
     private String payMethod;
 
-    @Column(length = 2000)  // 길이를 충분히 늘림
+    @Column(length = 20000)  // 길이를 충분히 늘림
     private String merchantUid;
 
     private String name;
-    private int amount;
+    @Column(nullable = false, columnDefinition = "DECIMAL(10,2) DEFAULT 0")
+    private BigDecimal amountTotal = BigDecimal.ZERO;
     private String buyerEmail;
     private String buyerName;
     private String buyerTel;
@@ -68,12 +71,12 @@ public class Payment {
         this.name = name;
     }
 
-    public int getAmount() {
-        return amount;
+    public BigDecimal  getAmountTotal() {
+        return amountTotal;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
+    public void setAmountTotal(BigDecimal amountTotal) {
+        this.amountTotal = amountTotal;
     }
 
     public String getBuyerEmail() {
@@ -123,4 +126,6 @@ public class Payment {
     public void setCompanyId(String companyId) {
         this.companyId = companyId;
     }
+
+
 }
