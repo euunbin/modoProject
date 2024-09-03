@@ -39,6 +39,8 @@ public class oauth2UserService extends DefaultOAuth2UserService {
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
         OAuth2User oAuth2User = super.loadUser(userRequest);
 
+
+
         // User Info 가져오기
         Map<String, Object> attributes = oAuth2User.getAttributes();
         logger.info("userInfo value " + attributes.toString());
@@ -107,5 +109,15 @@ public class oauth2UserService extends DefaultOAuth2UserService {
         List<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(role);
 
         return new DefaultOAuth2User(authorities, oAuth2User.getAttributes(), userNameAttributeName);
+    }
+
+    // externalId로 User를 조회하여 Role을 ROLE_OWNER로 변경하는 메소드
+    @Transactional
+    public void updateUserRoleToOwner(String externalId) {
+        User user = userRepository.findByExternalId(externalId);
+        if (user != null) {
+            user.setRole("ROLE_OWNER");
+            userRepository.save(user);
+        }
     }
 }

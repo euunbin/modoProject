@@ -9,6 +9,7 @@ import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.BusinessOwnerRegister.entity.StoreRequest;
 import com.example.modoproject.Review.entity.Review;
 import com.example.modoproject.Review.service.ReviewService;
+import com.example.modoproject.login.service.oauth2UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.*;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserService;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -54,6 +56,11 @@ public class StoreController {
 
     @Autowired
     private MenuService menuService; // MenuService 주입
+
+    @Autowired
+    private oauth2UserService oAuth2UserService;
+
+
 
     private final Path uploadDir = Paths.get("src/main/resources/static/storeImg");
 
@@ -134,8 +141,12 @@ public class StoreController {
     public ResponseEntity<Store> approveStore(@PathVariable Long requestId) {
         Store store = storeService.approveStore(requestId);
         if (store != null) {
+            String externalId = store.getExternalId();
+            if (externalId != null) {
+                // User의 Role을 ROLE_OWNER로 변경
+                oAuth2UserService.updateUserRoleToOwner(externalId);
+            }
             String companyId = store.getCompanyId();
-            // 세션에 companyId 저장
             session.setAttribute("companyId", companyId);
             logger.info("Current companyId in session: " + companyId); // 로그 출력
             return ResponseEntity.ok(store);
