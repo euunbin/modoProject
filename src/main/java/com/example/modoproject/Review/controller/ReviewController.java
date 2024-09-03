@@ -29,14 +29,14 @@ public class ReviewController {
     public ResponseEntity<String> postReview(
             @RequestParam("content") String content,
             @RequestParam(value = "image", required = false) MultipartFile image,
-            @RequestParam("merchantUid") String merchantUid) {
+            @RequestParam("merchantUid") String merchantUid) {  // companyId 파라미터 제거
         HttpSession session = httpServletRequest.getSession();
         User user = (User) session.getAttribute("user");
         String author = user != null ? user.getNickname() : "비회원";
         String externalId = user != null ? user.getExternalId() : "anonymous";
 
         try {
-            reviewService.saveReview(author, content, image, externalId, merchantUid);
+            reviewService.saveReview(author, content, image, externalId, merchantUid);  // companyId 전달 제거
             return new ResponseEntity<>("Review posted successfully", HttpStatus.CREATED);
         } catch (IOException e) {
             e.printStackTrace();
@@ -97,6 +97,12 @@ public class ReviewController {
     @GetMapping("/public/{merchantUid}") // 가게 상품의 모든 리뷰 조회
     public ResponseEntity<List<Review>> listAllReviewsByMerchantUid(@PathVariable("merchantUid") String merchantUid) {
         List<Review> reviews = reviewService.findByMerchantUid(merchantUid);
+        return new ResponseEntity<>(reviews, HttpStatus.OK);
+    }
+
+    @GetMapping("/listByCompany/{companyId}")
+    public ResponseEntity<List<Review>> listReviewsByCompanyId(@PathVariable("companyId") String companyId) {
+        List<Review> reviews = reviewService.findByCompanyId(companyId);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
 }

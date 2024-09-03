@@ -47,8 +47,6 @@ public class ReviewComment {
 
     public void setContent(String content) {
         this.content = content;
-        this.updatedAt = LocalDateTime.now();
-
     }
 
     public LocalDateTime getCreatedAt() {

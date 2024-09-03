@@ -13,4 +13,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
     List<Review> findByMerchantUidIn(List<String> merchantUids);
 
     List<Review> findByMerchantUid(String merchantUid);
+
+    List<Review> findByCompanyId(String companyId);
 }

@@ -2,6 +2,8 @@ package com.example.modoproject.Review.service;
 
 import com.example.modoproject.BusinessOwnerDashBoard.entity.Menu;
 import com.example.modoproject.BusinessOwnerDashBoard.repository.MenuRepository;
+import com.example.modoproject.Pay.entity.Payment;
+import com.example.modoproject.Pay.repository.PaymentRepository;
 import com.example.modoproject.Review.entity.Review;
 import com.example.modoproject.Review.repository.ReviewRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,8 @@ public class ReviewService {
     @Autowired
     private MenuRepository menuRepository;
 
+    @Autowired
+    private PaymentRepository paymentRepository;
 
     @Autowired
     private ReviewRepository reviewRepository;
@@ -31,11 +35,15 @@ public class ReviewService {
     private final String uploadDir = "src/main/resources/static/reviewImg";
 
     public void saveReview(String author, String content, MultipartFile image, String externalId, String merchantUid) throws IOException {
+        Optional<Payment> paymentOptional = paymentRepository.findByMerchantUid(merchantUid);
+        String companyId = paymentOptional.map(Payment::getCompanyId).orElse("unknown");
+
         Review review = new Review();
         review.setAuthor(author);
         review.setContent(content);
         review.setExternalId(externalId);
         review.setMerchantUid(merchantUid);
+        review.setCompanyId(companyId);
 
         if (image != null && !image.isEmpty()) {
             String imageName = image.getOriginalFilename();
@@ -95,5 +103,9 @@ public class ReviewService {
 
     public List<Review> findByMerchantUid(String merchantUid) {
         return reviewRepository.findByMerchantUid(merchantUid);
+    }
+
+    public List<Review> findByCompanyId(String companyId) {
+        return reviewRepository.findByCompanyId(companyId);
     }
 }

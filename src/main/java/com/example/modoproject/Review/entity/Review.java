@@ -29,6 +29,10 @@ public class Review {
 
     private LocalDateTime updatedDateTime;
 
+    @NotNull
+    @Column(nullable = false)
+    private String companyId;
+
     // Getters and Setters
 
     public Long getId() {
@@ -84,18 +88,6 @@ public class Review {
         this.updatedDateTime = updatedDateTime;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        if (this.createdDateTime == null) {
-            this.createdDateTime = LocalDateTime.now();
-        }
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedDateTime = LocalDateTime.now();
-    }
-
     public String getExternalId() {
         return externalId;
     }
@@ -110,5 +102,25 @@ public class Review {
 
     public void setMerchantUid(String merchantUid) {
         this.merchantUid = merchantUid;
+    }
+
+    public String getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(String companyId) {
+        this.companyId = companyId;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        if (this.createdDateTime == null) {
+            this.createdDateTime = LocalDateTime.now();
+        }
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        this.updatedDateTime = LocalDateTime.now();
     }
 }

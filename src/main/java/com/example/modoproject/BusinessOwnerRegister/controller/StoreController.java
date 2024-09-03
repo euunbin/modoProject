@@ -229,24 +229,18 @@ public class StoreController {
 
     @GetMapping("/my-store-reviews")
     public ResponseEntity<List<Review>> getMyStoreReviews() {
-        HttpSession session = httpServletRequest.getSession();
         String companyId = (String) session.getAttribute("companyId");
 
-        if (companyId != null) {
-            List<Menu> menus = menuRepository.findByCompanyId(companyId);
-            if (menus.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND); // No menus found
-            }
-
-            List<String> merchantUids = menus.stream()
-                    .map(Menu::getMerchanUid)
-                    .collect(Collectors.toList());
-
-            List<Review> reviews = reviewService.findByMerchantUids(merchantUids);
-
-            return new ResponseEntity<>(reviews, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        if (companyId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); // 세션에 companyId가 없는 경우
         }
+
+        List<Review> reviews = reviewService.findByCompanyId(companyId);
+
+        if (reviews.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 리뷰가 없는 경우
+        }
+
+        return ResponseEntity.ok(reviews);
     }
 }
