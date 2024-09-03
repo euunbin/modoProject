@@ -54,8 +54,6 @@ public class UserInfoController {
         return ResponseEntity.ok(userInfo);
     }
 
-
-
     @GetMapping("/success")
     public String showSuccessPage() {
         return "userinforeturn";
@@ -130,5 +128,17 @@ public class UserInfoController {
         Map<String, Boolean> response = new HashMap<>();
         response.put("isDuplicate", isDuplicate);
         return response;
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<List<UserInfo>> listUserInfos() {
+        String externalId = (String) httpSession.getAttribute("externalId");
+
+        if (externalId == null || externalId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+        }
+
+        List<UserInfo> userInfos = userInfoRepository.findByExternalId(externalId);
+        return ResponseEntity.ok(userInfos);
     }
 }
