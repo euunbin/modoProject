@@ -27,21 +27,23 @@ public class FavoritesController {
     private HttpSession session;
 
     @PostMapping
-    public ResponseEntity<Favorites> toggleFavorite(@RequestParam String companyId) {
+    public ResponseEntity<Void> toggleFavorite(@RequestBody List<String> companyIds) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
         String externalId = user.getExternalId();
 
-        Favorites existingFavorite = favoritesService.getFavoriteByExternalIdAndCompanyId(externalId, companyId);
-        if (existingFavorite != null) {
-            favoritesService.removeFavorite(externalId, companyId);
-            return ResponseEntity.noContent().build();
-        } else {
-            Favorites favorite = favoritesService.addFavorite(externalId, companyId);
-            return ResponseEntity.ok(favorite);
+        for (String id : companyIds) {
+            Favorites existingFavorite = favoritesService.getFavoriteByExternalIdAndCompanyId(externalId, id);
+            if (existingFavorite != null) {
+                favoritesService.removeFavorite(externalId, id);
+            } else {
+                favoritesService.addFavorite(externalId, id);
+            }
         }
+
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping
@@ -77,7 +79,7 @@ public class FavoritesController {
     public ResponseEntity<List<Store>> getFavoriteStores(HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return ResponseEntity.status(401).build(); // 사용자 인증이 필요한 경우
+            return ResponseEntity.ok(List.of()); 
         }
         String externalId = user.getExternalId();
         List<Favorites> favorites = favoritesService.getFavoritesByUser(externalId);
