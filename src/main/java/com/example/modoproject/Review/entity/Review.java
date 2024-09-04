@@ -1,5 +1,6 @@
 package com.example.modoproject.Review.entity;
 
+import com.example.modoproject.Pay.entity.Payment;
 import jakarta.persistence.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,6 +33,9 @@ public class Review {
     @NotNull
     @Column(nullable = false)
     private String companyId;
+
+    @Column(nullable = true)
+    private String name;
 
     // Getters and Setters
 
@@ -112,6 +116,10 @@ public class Review {
         this.companyId = companyId;
     }
 
+    public String getname() {
+        return name;
+    }
+
     @PrePersist
     protected void onCreate() {
         if (this.createdDateTime == null) {
@@ -122,5 +130,8 @@ public class Review {
     @PreUpdate
     protected void onUpdate() {
         this.updatedDateTime = LocalDateTime.now();
+    }
+
+    public void setName(String name) {this.name = name;
     }
 }

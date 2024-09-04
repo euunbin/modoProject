@@ -37,6 +37,7 @@ public class ReviewService {
     public void saveReview(String author, String content, MultipartFile image, String externalId, String merchantUid) throws IOException {
         Optional<Payment> paymentOptional = paymentRepository.findByMerchantUid(merchantUid);
         String companyId = paymentOptional.map(Payment::getCompanyId).orElse("unknown");
+        String name = paymentOptional.map(Payment::getName).orElse("unknown"); // 추가된 부분
 
         Review review = new Review();
         review.setAuthor(author);
@@ -44,6 +45,7 @@ public class ReviewService {
         review.setExternalId(externalId);
         review.setMerchantUid(merchantUid);
         review.setCompanyId(companyId);
+        review.setName(name);
 
         if (image != null && !image.isEmpty()) {
             String imageName = image.getOriginalFilename();
