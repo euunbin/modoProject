@@ -14,14 +14,11 @@ public class CartItemService {
     private CartItemRepository cartItemRepository;
 
     // 장바구니에 항목 추가
-    public CartItenEntity addToCart(String merchanUid, String companyId, String name, int price, int count, String imageUrl, String externalId) {
+    public CartItenEntity addToCart(String merchanUid, String companyId, String name, int price, String imageUrl, String externalId) {
         // 같은 메뉴가 이미 장바구니에 있는지 확인
         CartItenEntity existingCartItem = cartItemRepository.findByMerchanUidAndCompanyIdAndExternalId(merchanUid, companyId, externalId);
         if (existingCartItem != null) {
-            // 이미 있으면 수량만 증가
-            existingCartItem.setCount(existingCartItem.getCount() + count);
-            existingCartItem.setMoneyTotal(existingCartItem.getPrice() * existingCartItem.getCount());
-            return cartItemRepository.save(existingCartItem);
+            return existingCartItem;
         } else {
             // 새로운 항목을 추가
             CartItenEntity cartItem = new CartItenEntity();
@@ -29,9 +26,8 @@ public class CartItemService {
             cartItem.setCompanyId(companyId);
             cartItem.setName(name);
             cartItem.setPrice(price);
-            cartItem.setCount(count);
             cartItem.setImageUrl(imageUrl);
-            cartItem.setMoneyTotal(price * count);
+            cartItem.setMoneyTotal(price); // 수량이 없으므로 price만 저장
             cartItem.setExternalId(externalId);
             return cartItemRepository.save(cartItem);
         }
@@ -47,10 +43,4 @@ public class CartItemService {
         cartItemRepository.deleteById(id);
     }
 
-    public void updateCartItemQuantity(Long id, int newCount) {
-        CartItenEntity item = cartItemRepository.findById(id).orElseThrow(() -> new RuntimeException("Item not found"));
-        item.setCount(newCount);
-        item.setMoneyTotal(item.getPrice() * newCount);
-        cartItemRepository.save(item);
-    }
 }

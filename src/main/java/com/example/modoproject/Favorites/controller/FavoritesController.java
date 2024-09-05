@@ -79,7 +79,7 @@ public class FavoritesController {
     public ResponseEntity<List<Store>> getFavoriteStores(HttpSession session) {
         User user = (User) session.getAttribute("user");
         if (user == null) {
-            return ResponseEntity.ok(List.of()); 
+            return ResponseEntity.ok(List.of());
         }
         String externalId = user.getExternalId();
         List<Favorites> favorites = favoritesService.getFavoritesByUser(externalId);

@@ -21,12 +21,10 @@ public class CartItemController {
                                             @RequestParam String companyId,
                                             @RequestParam String name,
                                             @RequestParam int price,
-                                            @RequestParam int count,
                                             @RequestParam String imageUrl,
                                             HttpSession session) {
-        // 세션에서 사용자 externalId를 가져옴
         String externalId = (String) session.getAttribute("externalId");
-        cartService.addToCart(merchanUid, companyId, name, price, count, imageUrl, externalId);
+        cartService.addToCart(merchanUid, companyId, name, price, imageUrl, externalId);
         return ResponseEntity.ok("{\"status\":\"success\"}");
     }
 
@@ -45,10 +43,4 @@ public class CartItemController {
         return "{\"status\":\"success\"}";
     }
 
-    // 장바구니 항목 수량 업데이트
-    @PutMapping("/update/{id}")
-    public ResponseEntity<String> updateQuantity(@PathVariable Long id, @RequestBody CartItenEntity updatedItem) {
-        cartService.updateCartItemQuantity(id, updatedItem.getCount());
-        return ResponseEntity.ok("{\"status\":\"success\"}");
-    }
 }

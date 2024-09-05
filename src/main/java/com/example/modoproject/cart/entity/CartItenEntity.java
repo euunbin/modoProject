@@ -16,7 +16,6 @@ public class CartItenEntity {
     private int price;
     private int moneyTotal;
     private String imageUrl;
-    private int count;
     private String externalId; // 사용자 externalId 추가
 
     // Getters and setters
@@ -74,14 +73,6 @@ public class CartItenEntity {
 
     public void setImageUrl(String imageUrl) {
         this.imageUrl = imageUrl;
-    }
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
     }
 
     public String getExternalId() {
