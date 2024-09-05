@@ -14,7 +14,6 @@ public class CartItenEntity {
     private String companyId;
     private String name;
     private int price;
-    private int moneyTotal;
     private String imageUrl;
     private String externalId; // 사용자 externalId 추가
 
@@ -57,14 +56,6 @@ public class CartItenEntity {
 
     public void setPrice(int price) {
         this.price = price;
-    }
-
-    public int getMoneyTotal() {
-        return moneyTotal;
-    }
-
-    public void setMoneyTotal(int moneyTotal) {
-        this.moneyTotal = moneyTotal;
     }
 
     public String getImageUrl() {

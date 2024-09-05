@@ -27,7 +27,6 @@ public class CartItemService {
             cartItem.setName(name);
             cartItem.setPrice(price);
             cartItem.setImageUrl(imageUrl);
-            cartItem.setMoneyTotal(price); // 수량이 없으므로 price만 저장
             cartItem.setExternalId(externalId);
             return cartItemRepository.save(cartItem);
         }
