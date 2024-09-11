@@ -39,6 +39,12 @@ public class loginController {
 
                     session.setAttribute("externalId", externalId);
                     session.setAttribute("companyId", companyId);
+
+                    User user = (User) session.getAttribute("user");
+                    if (user != null) {
+                        String role = user.getRole();
+                        session.setAttribute("role", role); // 세션에 role 저장
+                    }
                 } else {
                     logger.info("External ID: " + externalId);
                     logger.info("Company ID: 업체 미등록");
@@ -53,6 +59,7 @@ public class loginController {
 
         return "redirect:http://localhost:3000/Main";
     }
+
     @GetMapping("/logout")
     @ResponseBody
     public String logout(HttpServletRequest request) {
@@ -60,6 +67,7 @@ public class loginController {
         session.removeAttribute("userInfo");
         session.removeAttribute("externalId");
         session.removeAttribute("companyId");
+        session.removeAttribute("role");
         session.invalidate();
         return "{\"message\":\"로그아웃 되었습니다.\", \"redirectUrl\":\"http://localhost:3000/Main\"}";
     }
@@ -86,4 +94,16 @@ public class loginController {
             return "{\"nickname\":\"\"}";
         }
     }
+
+    @GetMapping("/user/role")
+    @ResponseBody
+    public String getUserRole() {
+        User user = (User) httpSession.getAttribute("user");
+        if (user != null) {
+            return "{\"role\":\"" + user.getRole() + "\"}";
+        } else {
+            return "{\"role\":\"\"}";
+        }
+    }
+
 }
