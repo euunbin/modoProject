@@ -5,6 +5,8 @@ import com.example.modoproject.login.entity.User;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -103,6 +105,16 @@ public class loginController {
             return "{\"role\":\"" + user.getRole() + "\"}";
         } else {
             return "{\"role\":\"\"}";
+        }
+    }
+    @GetMapping("/user/externalId")
+    @ResponseBody
+    public ResponseEntity<String> getExternalId(HttpSession session) {
+        String externalId = (String) session.getAttribute("externalId");
+        if (externalId != null) {
+            return ResponseEntity.ok(externalId);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("External ID not found");
         }
     }
 
