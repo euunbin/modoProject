@@ -59,7 +59,7 @@ public class loginController {
             logger.info("No active session.");
         }
 
-        return "redirect:http://localhost:3000/Main";
+        return "redirect:http://localhost:3000";
     }
 
     @GetMapping("/logout")
@@ -71,7 +71,7 @@ public class loginController {
         session.removeAttribute("companyId");
         session.removeAttribute("role");
         session.invalidate();
-        return "{\"message\":\"로그아웃 되었습니다.\", \"redirectUrl\":\"http://localhost:3000/Main\"}";
+        return "{\"message\":\"로그아웃 되었습니다.\", \"redirectUrl\":\"http://localhost:3000\"}";
     }
 
     @GetMapping("/sessionlogin")

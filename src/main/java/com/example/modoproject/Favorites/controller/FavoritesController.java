@@ -1,5 +1,6 @@
 package com.example.modoproject.Favorites.controller;
 
+import com.example.modoproject.BusinessOwnerRegister.Repository.StoreRepository;
 import com.example.modoproject.BusinessOwnerRegister.Service.StoreService;
 import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.Favorites.entity.Favorites;
@@ -25,6 +26,9 @@ public class FavoritesController {
 
     @Autowired
     private HttpSession session;
+
+    @Autowired
+    private StoreRepository storeRepository;
 
     @PostMapping
     public ResponseEntity<Void> toggleFavorite(@RequestBody List<String> companyIds) {
@@ -88,5 +92,16 @@ public class FavoritesController {
                 .collect(Collectors.toList());
         List<Store> stores = storeService.getStoresByCompanyIds(companyIds);
         return ResponseEntity.ok(stores);
+    }
+
+
+    @GetMapping("/imageUrl/{companyId}")
+    public ResponseEntity<String> getImageUrlByCompanyId(@PathVariable String companyId) {
+        Store store = storeRepository.findByCompanyId(companyId);
+        if (store != null) {
+            return ResponseEntity.ok(store.getImageUrl());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
