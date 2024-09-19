@@ -243,4 +243,20 @@ public class StoreController {
 
         return ResponseEntity.ok(reviews);
     }
+
+    @GetMapping("/my-store-name")
+    public ResponseEntity<String> getMyStoreName() {
+        String companyId = (String) session.getAttribute("companyId");
+
+        if (companyId == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Company ID not found in session");
+        }
+
+        Store store = storeService.findByCompanyId(companyId);
+        if (store != null) {
+            return ResponseEntity.ok(store.getName());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
