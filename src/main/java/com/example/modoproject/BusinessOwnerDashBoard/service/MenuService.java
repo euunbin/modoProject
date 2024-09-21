@@ -113,4 +113,16 @@ public class MenuService {
     public void deleteMenusByCompanyId(String companyId) {
         menuRepository.deleteByCompanyId(companyId);
     }
+
+    public List<Menu> getRandomMenus(int count) {
+        List<Menu> allMenus = menuRepository.findAll();
+        Random random = new Random();
+
+        return random.ints(0, allMenus.size())
+                .distinct()
+                .limit(count)
+                .mapToObj(allMenus::get)
+                .toList();
+    }
+
 }

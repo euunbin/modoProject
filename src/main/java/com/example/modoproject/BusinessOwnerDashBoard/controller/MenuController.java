@@ -95,4 +95,9 @@ public class MenuController {
         }
         return ResponseEntity.noContent().build();
     }
+    @GetMapping("/random")
+    public ResponseEntity<List<Menu>> getRandomMenus(@RequestParam(defaultValue = "3") int count) {
+        List<Menu> randomMenus = menuService.getRandomMenus(count);
+        return ResponseEntity.ok(randomMenus);
+    }
 }
