@@ -42,4 +42,23 @@ public class CartItemService {
         cartItemRepository.deleteById(id);
     }
 
+    // 결제된 항목 삭제 로직
+    public void deletePaidItems(List<String> merchantUids, String externalId, String companyId) {
+        for (String fullMerchanUid : merchantUids) {
+            // fullMerchanUid에서 실제 장바구니에 저장된 부분만 추출 (예: q3AdW5Tl44ducPwXPLY3)
+            String merchanUid = fullMerchanUid.split("\\.")[1]; // "."을 기준으로 두 번째 부분 추출
+
+            System.out.println("삭제 요청: merchanUid=" + merchanUid + ", companyId=" + companyId + ", externalId=" + externalId);
+
+            List<CartItenEntity> items = cartItemRepository.findAllByMerchanUidAndCompanyIdAndExternalId(merchanUid, companyId, externalId);
+
+            if (items.isEmpty()) {
+                System.out.println("삭제할 항목이 없습니다: merchantUid=" + merchanUid + ", companyId=" + companyId);
+            } else {
+                System.out.println("삭제할 항목: " + items.size() + "개");
+                cartItemRepository.deleteAll(items);
+            }
+        }
+    }
+
 }
