@@ -10,4 +10,5 @@ public interface PaymentRepository extends JpaRepository<Payment, Long> {
     List<Payment> findByExternalId(String externalId);
     Optional<Payment> findByMerchantUid(String merchantUid);
 
+    List<Payment> findByCompanyId(String companyId);
 }
