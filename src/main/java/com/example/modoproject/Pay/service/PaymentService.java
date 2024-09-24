@@ -25,4 +25,9 @@ public class PaymentService {
     public List<Payment> getPaymentsByExternalId(String externalId) {
         return paymentRepository.findByExternalId(externalId);
     }
+
+    public List<Payment> getPaymentsByCompanyId(String companyId) {
+        return paymentRepository.findByCompanyId(companyId);
+
+    }
 }

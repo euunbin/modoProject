@@ -60,4 +60,17 @@ public class PaymentsController {
             return new ArrayList<>();
         }
     }
+
+    @GetMapping("/payments/company")
+    public List<Payment> getCompanyPayments() {
+        HttpSession session = httpServletRequest.getSession();
+        String companyId = (String) session.getAttribute("companyId");
+
+        if (companyId != null) {
+            return paymentService.getPaymentsByCompanyId(companyId);
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
 }
