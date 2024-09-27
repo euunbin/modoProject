@@ -11,10 +11,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class MenuService {
@@ -115,14 +112,27 @@ public class MenuService {
     }
 
     public List<Menu> getRandomMenus(int count) {
-        List<Menu> allMenus = menuRepository.findAll();
-        Random random = new Random();
+        List<Menu> menuList = menuRepository.findAll();
 
-        return random.ints(0, allMenus.size())
-                .distinct()
-                .limit(count)
-                .mapToObj(allMenus::get)
-                .toList();
+        if (menuList.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        int bound = menuList.size();
+        if (count <= 0 || count > bound) {
+            throw new IllegalArgumentException("Count must be between 1 and " + bound);
+        }
+
+        Random random = new Random();
+        Set<Menu> randomMenus = new HashSet<>();
+
+        while (randomMenus.size() < count) {
+            int index = random.nextInt(bound);
+            randomMenus.add(menuList.get(index));
+        }
+
+        return new ArrayList<>(randomMenus);
     }
+
 
 }
