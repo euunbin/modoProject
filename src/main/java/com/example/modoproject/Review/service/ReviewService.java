@@ -110,4 +110,8 @@ public class ReviewService {
     public List<Review> findByCompanyId(String companyId) {
         return reviewRepository.findByCompanyId(companyId);
     }
+
+    public List<Review> findLatestReviews() {
+        return reviewRepository.findTop6ByOrderByCreatedDateDesc();
+    }
 }

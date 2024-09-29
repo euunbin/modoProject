@@ -259,4 +259,15 @@ public class StoreController {
             return ResponseEntity.notFound().build();
         }
     }
+
+    @GetMapping("/{companyId}/id")
+    public ResponseEntity<Long> getStoreIdByCompanyId(@PathVariable String companyId) {
+        Store store = storeService.findByCompanyId(companyId);
+        if (store != null) {
+            return ResponseEntity.ok(store.getId());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
 }

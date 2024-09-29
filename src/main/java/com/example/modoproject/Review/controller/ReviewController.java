@@ -105,4 +105,10 @@ public class ReviewController {
         List<Review> reviews = reviewService.findByCompanyId(companyId);
         return new ResponseEntity<>(reviews, HttpStatus.OK);
     }
+
+    @GetMapping("/latest")
+    public ResponseEntity<List<Review>> getLatestReviews() {
+        List<Review> latestReviews = reviewService.findLatestReviews();
+        return new ResponseEntity<>(latestReviews, HttpStatus.OK);
+    }
 }
