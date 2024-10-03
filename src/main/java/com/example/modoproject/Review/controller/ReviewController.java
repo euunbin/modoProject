@@ -1,5 +1,7 @@
 package com.example.modoproject.Review.controller;
 
+import com.example.modoproject.BusinessOwnerRegister.Service.StoreService;
+import com.example.modoproject.BusinessOwnerRegister.entity.Store;
 import com.example.modoproject.Review.entity.Review;
 import com.example.modoproject.Review.service.ReviewService;
 import com.example.modoproject.login.entity.User;
@@ -21,7 +23,8 @@ public class ReviewController {
 
     @Autowired
     private ReviewService reviewService;
-
+    @Autowired
+    private StoreService storeService;
     @Autowired
     private HttpServletRequest httpServletRequest;
 
@@ -110,5 +113,25 @@ public class ReviewController {
     public ResponseEntity<List<Review>> getLatestReviews() {
         List<Review> latestReviews = reviewService.findLatestReviews();
         return new ResponseEntity<>(latestReviews, HttpStatus.OK);
+    }
+
+    @GetMapping("/myStore/reviews/{storeId}")
+    public ResponseEntity<List<String>> getMyStoreReviews(@PathVariable("storeId") Long storeId) {
+        Optional<Store> optionalStore = storeService.findById(storeId);
+
+        if (optionalStore.isPresent()) {
+            Store store = optionalStore.get();
+            String companyId = store.getCompanyId(); // Store에서 companyId 추출
+
+            List<Review> reviews = reviewService.findByCompanyId(companyId); // 회사 ID로 리뷰를 조회
+
+            List<String> reviewContents = reviews.stream()
+                    .map(Review::getContent)
+                    .toList();
+
+            return new ResponseEntity<>(reviewContents, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }

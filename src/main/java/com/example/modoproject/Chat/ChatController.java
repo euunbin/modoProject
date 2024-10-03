@@ -20,4 +20,9 @@ public class ChatController {
     public String test(@RequestBody String question) {
         return chatService.getChatResponse(question);
     }
+
+    @PostMapping("/summarize")
+    public String summarizeReviews(@RequestBody String reviews) {
+        return chatService.getSummaryResponse(reviews);
+    }
 }
