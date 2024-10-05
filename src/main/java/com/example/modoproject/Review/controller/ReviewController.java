@@ -115,23 +115,4 @@ public class ReviewController {
         return new ResponseEntity<>(latestReviews, HttpStatus.OK);
     }
 
-    @GetMapping("/myStore/reviews/{storeId}")
-    public ResponseEntity<List<String>> getMyStoreReviews(@PathVariable("storeId") Long storeId) {
-        Optional<Store> optionalStore = storeService.findById(storeId);
-
-        if (optionalStore.isPresent()) {
-            Store store = optionalStore.get();
-            String companyId = store.getCompanyId(); // Store에서 companyId 추출
-
-            List<Review> reviews = reviewService.findByCompanyId(companyId); // 회사 ID로 리뷰를 조회
-
-            List<String> reviewContents = reviews.stream()
-                    .map(Review::getContent)
-                    .toList();
-
-            return new ResponseEntity<>(reviewContents, HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
 }

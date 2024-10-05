@@ -13,13 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/v1/chat-gpt")
 public class ChatController {
 
-    private final ChatgptService chatgptService;
     private final  ChatService chatService;
-
-    @PostMapping("")
-    public String test(@RequestBody String question) {
-        return chatService.getChatResponse(question);
-    }
 
     @PostMapping("/summarize")
     public String summarizeReviews(@RequestBody String reviews) {
