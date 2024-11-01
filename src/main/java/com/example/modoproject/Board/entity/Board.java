@@ -59,4 +59,8 @@ public class Board {
         this.category = category;
         this.type = type;
     }
+
+    public void setImagePath(String imagePath) {
+        this.imagePath = imagePath;
+    }
 }

@@ -2,6 +2,7 @@ package com.example.modoproject.Board.controller;
 
 import com.example.modoproject.Board.dto.BoardDto;
 import com.example.modoproject.Board.service.BoardService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
@@ -66,22 +67,38 @@ public class EventController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<BoardDto> update(@PathVariable("id") Long id, @RequestPart("board") BoardDto boardDto, @RequestPart(value = "image", required = false) MultipartFile image) {
-        try {
-            if (image != null && !image.isEmpty()) {
-                boardDto.setImagePath(saveImage(image));
-            } else {
-                // 기존 게시글에서 이미지 경로를 가져와서 설정
-                BoardDto existingBoard = boardService.getPost(id);
-                boardDto.setImagePath(existingBoard.getImagePath());
+    public ResponseEntity<BoardDto> update(
+            @PathVariable("id") Long id,
+            @RequestPart("board") BoardDto boardDto,
+            @RequestPart(value = "image", required = false) MultipartFile image) {
+        BoardDto existingPost = boardService.getPost(id);
+
+        if (existingPost != null) {
+            boardDto.setId(id); // ID 설정
+            boardDto.setType(existingPost.getType()); // 기존 type 값을 유지
+            boardDto.setAuthor(existingPost.getAuthor());  // 기존 author를 유지
+            boardDto.setCategory(existingPost.getCategory()); // 기존 `category`와 `author` 값 유지
+
+            try {
+                if (image != null && !image.isEmpty()) {
+                    boardDto.setImagePath(saveImage(image));
+                } else {
+                    // 기존 게시글에서 이미지 경로를 가져와서 설정
+                    BoardDto existingBoard = boardService.getPost(id);
+                    boardDto.setImagePath(existingBoard.getImagePath());
+                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            boardDto.setId(id); // ID 설정
+            boardDto.setType("이벤트");
+            boardService.savePost(boardDto);
+            return ResponseEntity.ok(boardService.getPost(id));
+        }else {
+            return ResponseEntity.notFound().build();
         }
-        boardDto.setId(id); // ID 설정
-        boardDto.setType("이벤트");
-        boardService.savePost(boardDto);
-        return ResponseEntity.ok(boardService.getPost(id));
     }
 
     @DeleteMapping("/{id}")

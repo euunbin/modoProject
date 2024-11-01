@@ -21,10 +21,15 @@ public class BoardService {
     public Long savePost(BoardDto boardDto) {
         Board board;
         if (boardDto.getId() != null) {
-            board = boardRepository.findById(boardDto.getId()).orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
+            board = boardRepository.findById(boardDto.getId())
+                    .orElseThrow(() -> new IllegalArgumentException("Invalid post ID"));
             boardDto.setType(board.getType()); // 기존 type 값을 유지
+            boardDto.setAuthor(board.getAuthor()); // 기존 author 값 유지
+            boardDto.setCategory(board.getCategory()); // 기존 `category` 유지
+
         }
         board = boardDto.toEntity();
+        board.setImagePath(boardDto.getImagePath()); // 이미지 경로 설정
         return boardRepository.save(board).getId();
     }
 
