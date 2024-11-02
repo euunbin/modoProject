@@ -88,11 +88,12 @@ public class NoticeController {
                     boardDto.setImagePath(saveImage(image));
                 } else {
                     boardDto.setImagePath(existingPost.getImagePath());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
             }
 
             boardService.savePost(boardDto);

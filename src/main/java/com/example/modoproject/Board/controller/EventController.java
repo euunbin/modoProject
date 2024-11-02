@@ -86,11 +86,12 @@ public class EventController {
                     // 기존 게시글에서 이미지 경로를 가져와서 설정
                     BoardDto existingBoard = boardService.getPost(id);
                     boardDto.setImagePath(existingBoard.getImagePath());
-                    return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 
                 }
             } catch (IOException e) {
                 e.printStackTrace();
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+
             }
             boardDto.setId(id); // ID 설정
             boardDto.setType("이벤트");
