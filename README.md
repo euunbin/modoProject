@@ -17,7 +17,9 @@
 - 이여민
 
 ## 3. 개발 환경
-![image](https://github.com/user-attachments/assets/846365cc-ecfa-468b-a388-7bb39a50b1f2)
+<img src="https://img.shields.io/badge/
+IntelliJ IDEA?style=for-the-badge&logo=
+IntelliJ IDEA&logoColor=white">
 
 
 ## 4. 프로젝트 구조
