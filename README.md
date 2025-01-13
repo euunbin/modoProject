@@ -5,7 +5,7 @@
 ![image](https://github.com/user-attachments/assets/87d33a82-1dc4-44b0-9aaa-eb6c6f06f91e)
 
 ### 1. 프로젝트 소개
-
+---
 
 모도모도는 누구나 사용할 수 있는 도시락 예약 플랫폼 사이트 입니다.
 
