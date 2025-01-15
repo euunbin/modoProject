@@ -46,7 +46,7 @@
 ## 4. 프로젝트 구조
 <a href="https://www.erdcloud.com/d/8Lf2f63JR7jpDJMqQ" target="_blank">
     <img src="https://img.shields.io/badge/ERDCloud-0072FF?style=for-the-badge&logo=erdcloud&logoColor=white" alt="ERDCloud" />
-</a>
+</a> 클릭!
 
 ---
 ## 5. 차별점 
