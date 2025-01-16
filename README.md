@@ -47,16 +47,15 @@
 
 - **프론트엔드**: ![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)<img src="https://img.shields.io/badge/14.2.11-515151?style=for-the-badge"> ![React](https://img.shields.io/badge/React-61DAFB?style=for-the-badge&logo=react&logoColor=black)<img src="https://img.shields.io/badge/18.3.1-515151?style=for-the-badge"> ![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=node.js&logoColor=white)
 
-- **협업 툴**: ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white) ![ERDCloud](https://img.shields.io/badge/ERDCloud-0072FF?style=for-the-badge&logo=erdcloud&logoColor=white)
-
----
-## 4. 프로젝트 구조
-<a href="https://www.erdcloud.com/d/8Lf2f63JR7jpDJMqQ" target="_blank">
+- **협업 툴**: ![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white) ![Notion](https://img.shields.io/badge/Notion-000000?style=for-the-badge&logo=notion&logoColor=white) <a href="https://www.erdcloud.com/d/8Lf2f63JR7jpDJMqQ" target="_blank">
     <img src="https://img.shields.io/badge/ERDCloud-0072FF?style=for-the-badge&logo=erdcloud&logoColor=white" alt="ERDCloud" />
 </a> 클릭!
 
 ---
-## 5. 차별점 
+## 5. 프로젝트 구조
+
+---
+## 6. 차별점 
 - **결제** : 원하는 날짜, 시간대에 주문. 예약 가능 
 
 - **장바구니** : 여러 업체의 메뉴 담기 가능 
@@ -64,7 +63,7 @@
 - **AI 리뷰 요약** : 리뷰 리스트 기반 AI 선택지 반환 
 
 ---  
-## 6. 설치 방법
+## 7. 설치 방법
 
 
 - **프론트엔드**
@@ -84,7 +83,7 @@ gradlew build
 ```
 
 ---
-## 9. 프로젝트 후기
+## 8. 프로젝트 후기
 
 - **서동현**  
 "1년이라는 시간 동안 팀원들과의 협력으로 프로젝트를 무사히 마친 것 같다. 혼자보다는 둘이 낫고 둘보다는 셋이 낫듯이 혼자 했었으면 이렇게 완성도 높게 만들지 못했을 것이다. 팀원들에게는 감사한 마음뿐이다."  
