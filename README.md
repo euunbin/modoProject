@@ -1,9 +1,9 @@
 <h1 align="center">MODO MODO<br><strong>모든 도시락, 모두의 도시락</strong></h1>
 <h3 align="center">모두를 위한 도시락 예약 플랫폼</h3>
 
-
-<img src="https://github.com/user-attachments/assets/47d7b689-2a63-44c4-9185-42a33bfe6667"  width="800" height="430"  align="center"/>
-
+<p align="center">
+<img src="https://github.com/user-attachments/assets/47d7b689-2a63-44c4-9185-42a33bfe6667"  width="800" height="430"  />
+</p>
 
 
 ---
