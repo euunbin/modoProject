@@ -2,10 +2,9 @@
 <h3 align="center">모두를 위한 도시락 예약 플랫폼</h3>
 
 
-<img src="https://github.com/user-attachments/assets/e12d2b02-ce8d-4c02-98c5-9d44150be74a  width="200" height="400"/>
+<img src="https://github.com/user-attachments/assets/47d7b689-2a63-44c4-9185-42a33bfe6667  width="200" height="400"/>
 
 
--![localhost_3000_ (9)](https://github.com/user-attachments/assets/e12d2b02-ce8d-4c02-98c5-9d44150be74a)
 
 ---
 ## 1. 프로젝트 개요
