@@ -67,8 +67,6 @@ DB구조 설계, 디자인 설계, API 설계
     <img src="https://img.shields.io/badge/ERDCloud-0072FF?style=for-the-badge&logo=erdcloud&logoColor=white" alt="ERDCloud" />
 </a> 클릭!
 
----
-## 5. 프로젝트 구조
 
 ---
 ## 6. 차별점 
