@@ -32,8 +32,10 @@
 ## 2. 개발 기간
 <h3 align="center">24/03/01 ~ 24/10/31</h3>
 
+<p align="center">
+<img src="https://github.com/user-attachments/assets/c8772bd4-6ffc-4704-b734-dd6d7b03eba9"  width="800" height="430"  />
+</p>
 
-![image](https://github.com/user-attachments/assets/c8772bd4-6ffc-4704-b734-dd6d7b03eba9)
 
 
 
