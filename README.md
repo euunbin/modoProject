@@ -72,11 +72,24 @@ DB구조 설계, 디자인 설계, API 설계
 
 ---
 ## 6. 차별점 
-- **결제** : 원하는 날짜, 시간대에 주문. 예약 가능 
+- **결제** : 원하는 날짜, 시간대에 주문. 예약 가능
 
-- **장바구니** : 여러 업체의 메뉴 담기 가능 
+  
+![image](https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c)
+
+
+- **장바구니** : 여러 업체의 메뉴 담기 가능
+
+
+![image](https://github.com/user-attachments/assets/fa14e3d7-9942-47e4-9a2d-8708bac6525f)
+
+
 
 - **AI 리뷰 요약** : 리뷰 리스트 기반 AI 선택지 반환 
+
+
+![image](https://github.com/user-attachments/assets/a6ee9b51-c6fc-4750-9ffa-f79ee00b2dbe)
+
 
 ---  
 ## 7. 설치 방법
