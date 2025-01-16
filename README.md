@@ -33,7 +33,7 @@
 
 
 
-## 2. 팀원 소개 및 역할
+## 3. 팀원 소개 및 역할
 백엔드, 프론트엔드 공통
 - **서동현**: 전체적인 시스템 구성 및 API 설계, 결제 시스템 주도
   
@@ -41,7 +41,7 @@
   
 - **이여민**: 사용자 인터페이스 개발 및 디자인 최적화, UI/UX 개선 주도  
 ---
-## 3. 개발 환경
+## 4. 개발 환경
 
 - **백엔드**: ![springboot](https://img.shields.io/badge/springboot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)<img src="https://img.shields.io/badge/3.1.4-515151?style=for-the-badge"> ![MySQL](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)<img src="https://img.shields.io/badge/8.0.33-515151?style=for-the-badge"> ![IntelliJ IDEA](https://img.shields.io/badge/IntelliJ%20IDEA-EE4C2C?style=for-the-badge&logo=IntelliJ%20IDEA&logoColor=white) <img src="https://img.shields.io/badge/java-%23ED8B00?style=for-the-badge&logo=openjdk&logoColor=white"><img src="https://img.shields.io/badge/17-515151?style=for-the-badge">
 
@@ -82,19 +82,6 @@ application.properties 데이터베이스 연결
 
 gradlew build
 ```
-
----
-## 7. 난제 극복
-
-- **결제**  
-    다중 업체 결제는 결제 수단, 정산, 환불로 인해 복잡 -> 업체별 개별 결제로 변경하여 결제, 정산, 환불을 각각 관리
-
-- **JSX -> TSX**  
-    트렌디한 TSX 사용을 위해 TSX를 학습 후 문법 수정 
-
-- **AI 리뷰 요약**  
-    AI가 요구한 내용과 동떨어진 대답이 다수 출력 -> 선택지 기반의 응답 반환 방식으로 수정 + 예외 처리를 강화 + 데이터 추가 학습을 통한 상황에 맞는 답변을 개선
-
 
 ---
 ## 9. 프로젝트 후기
