@@ -1,4 +1,4 @@
-<h1 align="center">MODO MODO<br><strong>모든 도시락, 모두의 도시락</strong></h1>
+![image](https://github.com/user-attachments/assets/1fa9fc7d-d622-470d-ba54-36ea9387f9c6)<h1 align="center">MODO MODO<br><strong>모든 도시락, 모두의 도시락</strong></h1>
 <h3 align="center">모두를 위한 도시락 예약 플랫폼</h3>
 <h3 align="center">24/03/01 ~ 24/10/31</h3>
 
@@ -26,6 +26,13 @@
 - **고객 확보**: 신규 고객 유치와 기존 고객 유지  
 - **비즈니스 성과 향상**: 마케팅과 매출 증대 효과 기대  
 ---
+
+
+## 2. 개발 기간
+![image](https://github.com/user-attachments/assets/c8772bd4-6ffc-4704-b734-dd6d7b03eba9)
+
+
+
 ## 2. 팀원 소개 및 역할
 백엔드, 프론트엔드 공통
 - **서동현**: 전체적인 시스템 구성 및 API 설계, 결제 시스템 주도
