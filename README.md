@@ -2,7 +2,7 @@
 <h3 align="center">모두를 위한 도시락 예약 플랫폼</h3>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/47d7b689-2a63-44c4-9185-42a33bfe6667"  width="700" height="450"  />
+<img src="https://github.com/user-attachments/assets/47d7b689-2a63-44c4-9185-42a33bfe6667"  width="850" height="480"  />
 </p>
 
 
@@ -33,7 +33,7 @@
 <h3 align="center">24/03/01 ~ 24/10/31</h3>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/c8772bd4-6ffc-4704-b734-dd6d7b03eba9"  width="800" height="470"  />
+<img src="https://github.com/user-attachments/assets/c8772bd4-6ffc-4704-b734-dd6d7b03eba9"  width="800" height="480"  />
 </p>
 
 
@@ -77,7 +77,7 @@ DB구조 설계, 디자인 설계, API 설계
 
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="700" height="300"  />
+<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="850" height="430"  />
 </p>
 
 
