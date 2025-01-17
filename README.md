@@ -2,7 +2,7 @@
 <h3 align="center">모두를 위한 도시락 예약 플랫폼</h3>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/47d7b689-2a63-44c4-9185-42a33bfe6667"  width="700" height="300"  />
+<img src="https://github.com/user-attachments/assets/47d7b689-2a63-44c4-9185-42a33bfe6667"  width="700" height="450"  />
 </p>
 
 
@@ -76,7 +76,7 @@ DB구조 설계, 디자인 설계, API 설계
 - **결제** : 원하는 날짜, 시간대에 주문. 예약 가능
 
   <p align="center">
-<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="800" height="470"  />
+<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="800" height="300"  />
 </p>
 
 
