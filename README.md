@@ -1,5 +1,5 @@
 <p align="right">
-  <a href="https://github.com/mimo626/knuKproject">
+  <a href="https://github.com/dongdongsw/modoreactRE">
     <img src="https://img.shields.io/badge/프론트%20페이지%20바로가기-666666?style=for-the-badge&logo=github&logoColor=white" alt="프론트 페이지 바로가기">
   </a>
 </p>
