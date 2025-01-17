@@ -76,7 +76,7 @@ DB구조 설계, 디자인 설계, API 설계
 - **결제** : 원하는 날짜, 시간대에 주문. 예약 가능
 
   <p align="center">
-<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="800" height="300"  />
+<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="600" height="300"  />
 </p>
 
 
