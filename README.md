@@ -33,7 +33,7 @@
 <h3 align="center">24/03/01 ~ 24/10/31</h3>
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/c8772bd4-6ffc-4704-b734-dd6d7b03eba9"  width="800" height="430"  />
+<img src="https://github.com/user-attachments/assets/c8772bd4-6ffc-4704-b734-dd6d7b03eba9"  width="800" height="470"  />
 </p>
 
 
@@ -75,8 +75,10 @@ DB구조 설계, 디자인 설계, API 설계
 ## 5. 차별점 
 - **결제** : 원하는 날짜, 시간대에 주문. 예약 가능
 
-  
-![image](https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c)
+  <p align="center">
+<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="800" height="470"  />
+</p>
+
 
 
 - **장바구니** : 여러 업체의 메뉴 담기 가능
