@@ -45,26 +45,34 @@
 
 
 
-## 3. 팀원 소개 및 역할
-- 공통
-DB구조 설계, 디자인 설계, API 설계
+## 3. 팀원 소개 및 역할💡
+- **공통**
 
-
-- **서동현**: 전체적인 시스템 구성 및 API 설계, 결제 시스템 주도
-
-
-  기능 : 결제, 장바구니, 게시판(이벤트 ,공지사항, QnA), 점주 페이지(주문내역, 휴무일, 메뉴 관리, 가게 승인 페이지, 가게등록 페이지
   
-- **서은빈**:
+  DB구조 설계, 디자인 설계, API 설계
+
+
+- **서동현**
+
+
+  기능 : 결제, 장바구니, 게시판(이벤트 ,공지사항, QnA), 점주 페이지(주문내역, 휴무일, 메뉴 관리), 가게 승인 페이지, 가게등록 페이지
+  
+- **서은빈**
 
 
   기능 : AI, 마이페이지(주소지, 즐겨찾기, 장바구니, 결제내역), 점주 페이지(리뷰 관리,가게 정보), 스토어 검색 기능, 즐겨찾기, 카카오 로그인, 댓글 기능, 
 
   
-- **이여민**: 사용자 인터페이스 개발 및 디자인 최적화, UI/UX 개선 주도
+- **이여민**
 
 
-  기능 :  가게 승인 페이지, 가게등록 페이지
+  기능 :  가게 승인 페이지, 가게등록 페이지, UI/UX 개선 주도
+
+
+  
+
+
+
 ---
 ## 4. 개발 환경
 
@@ -83,7 +91,7 @@ DB구조 설계, 디자인 설계, API 설계
 
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="850" height="430"  />
+<img src="https://github.com/user-attachments/assets/9c9b6215-4126-45da-9a26-87bf9c99273c"  width="1000"   />
 </p>
 
 
@@ -91,7 +99,7 @@ DB구조 설계, 디자인 설계, API 설계
 - **장바구니** : 여러 업체의 메뉴 담기 가능
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/fa14e3d7-9942-47e4-9a2d-8708bac6525f"  width="400" height="480"  />
+<img src="https://github.com/user-attachments/assets/fa14e3d7-9942-47e4-9a2d-8708bac6525f"  width="700"  />
 </p>
 
 
@@ -100,7 +108,7 @@ DB구조 설계, 디자인 설계, API 설계
 - **AI 리뷰 요약** : 리뷰 리스트 기반 AI 선택지 반환 
 
 <p align="center">
-<img src="https://github.com/user-attachments/assets/a6ee9b51-c6fc-4750-9ffa-f79ee00b2dbe"  width="400" height="480"  />
+<img src="https://github.com/user-attachments/assets/a6ee9b51-c6fc-4750-9ffa-f79ee00b2dbe"  width="700"  />
 </p>
 
 
